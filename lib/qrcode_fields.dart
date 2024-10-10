@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
+import 'package:qr_code_app/qr_message.dart';
+
+enum MessageType { text, link, wifi }
+
+enum LinkType { http, https, raw }
+
 enum ErrorCorrectionLevel { L, M, Q, H }
 
+// Default Selected items
+LinkType selectedLinkType = LinkType.https;
+MessageType selectedMessageType = MessageType.text;
 ErrorCorrectionLevel selectedErrorCorrectionLevel = ErrorCorrectionLevel.L;
 
+// Fuction to show ErrorCorrectionLevel Help dialog
 void showHelpDialog(BuildContext context) {
   showDialog(
     context: context,
@@ -50,33 +60,36 @@ void showHelpDialog(BuildContext context) {
   );
 }
 
+// Widgit for all the QRcode Input Fields
 class InputSection extends StatefulWidget {
   final TextEditingController inputTextController;
-  final Color currentMainColor;
+  final Color currentForgroundColor;
   final Color currentBackgroundColor;
-  final Color pickerMainColor;
+  final Color pickerForgroundColor;
   final Color pickerBackgroundColor;
-  final ValueChanged<Color> onMainColorChanged;
+  final ValueChanged<Color> onForgroundColorChanged;
   final ValueChanged<Color> onBackgroundColorChanged;
+  final bool isLinkMessageActive;
+  final ValueChanged<bool> onLinkMessageActiveChanged;
 
   const InputSection({
     Key? key,
     required this.inputTextController,
-    required this.currentMainColor,
+    required this.currentForgroundColor,
     required this.currentBackgroundColor,
-    required this.pickerMainColor,
+    required this.pickerForgroundColor,
     required this.pickerBackgroundColor,
-    required this.onMainColorChanged,
+    required this.onForgroundColorChanged,
     required this.onBackgroundColorChanged,
+    required this.isLinkMessageActive,
+    required this.onLinkMessageActiveChanged,
   }) : super(key: key);
 
   @override
-  _InputSectionState createState() => _InputSectionState();
+  InputSectionState createState() => InputSectionState();
 }
 
-class _InputSectionState extends State<InputSection> {
-  // Default selected error correction level
-
+class InputSectionState extends State<InputSection> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -91,37 +104,28 @@ class _InputSectionState extends State<InputSection> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // TextField for input
-            SizedBox(
-              height: 56,
-              width: 300,
-              child: TextField(
-                textAlign: TextAlign.center,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  labelText: 'Message',
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter a search term',
-                  floatingLabelAlignment: FloatingLabelAlignment.center,
-                ),
-                controller: widget.inputTextController,
-              ),
+            // Input Fields for the QRcode Message
+            MessageField(
+              inputTextController: widget.inputTextController,
+              isLinkMessageActive: widget.isLinkMessageActive,
+              onLinkMessageActiveChanged: widget.onLinkMessageActiveChanged,
             ),
             const SizedBox(height: 16),
-            // Error Correction
+            // Error Correction Text and Iconbutton
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Error Correction Level'),
                 IconButton(
                   onPressed: () {
-                    showHelpDialog(context);
+                    showHelpDialog(context); // help dialog
                   },
                   icon: const Icon(Icons.help),
                   iconSize: 17,
                 ),
               ],
             ),
+            // ErrorCorrectionslevel selection button
             SegmentedButton<ErrorCorrectionLevel>(
               showSelectedIcon: false,
               emptySelectionAllowed: false,
@@ -156,7 +160,7 @@ class _InputSectionState extends State<InputSection> {
               ),
             ),
             const SizedBox(height: 16),
-            // Main color Picker button
+            // Foreground color Picker button
             ElevatedButton.icon(
               onPressed: () {
                 showDialog(
@@ -167,8 +171,8 @@ class _InputSectionState extends State<InputSection> {
                       contentPadding: const EdgeInsets.all(0),
                       content: SingleChildScrollView(
                         child: MaterialPicker(
-                          pickerColor: widget.pickerMainColor,
-                          onColorChanged: widget.onMainColorChanged,
+                          pickerColor: widget.pickerForgroundColor,
+                          onColorChanged: widget.onForgroundColorChanged,
                           enableLabel: true,
                         ),
                       ),
@@ -179,7 +183,7 @@ class _InputSectionState extends State<InputSection> {
               label: const Text('Foreground Color'),
               icon: Stack(
                 children: [
-                  Icon(Icons.color_lens, color: widget.currentMainColor),
+                  Icon(Icons.color_lens, color: widget.currentForgroundColor),
                   const Icon(Icons.color_lens_outlined, color: Colors.black),
                 ],
               ),
