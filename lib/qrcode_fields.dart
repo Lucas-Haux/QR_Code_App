@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:qr_code_app/qr_message.dart';
-
-enum MessageType { text, link, wifi }
-
-enum LinkType { http, https, raw }
-
 enum ErrorCorrectionLevel { L, M, Q, H }
 
-// Default Selected items
-LinkType selectedLinkType = LinkType.https;
-MessageType selectedMessageType = MessageType.text;
 ErrorCorrectionLevel selectedErrorCorrectionLevel = ErrorCorrectionLevel.L;
 
 // Fuction to show ErrorCorrectionLevel Help dialog
@@ -62,27 +53,21 @@ void showHelpDialog(BuildContext context) {
 
 // Widgit for all the QRcode Input Fields
 class InputSection extends StatefulWidget {
-  final TextEditingController inputTextController;
   final Color currentForgroundColor;
   final Color currentBackgroundColor;
   final Color pickerForgroundColor;
   final Color pickerBackgroundColor;
   final ValueChanged<Color> onForgroundColorChanged;
   final ValueChanged<Color> onBackgroundColorChanged;
-  final bool isLinkMessageActive;
-  final ValueChanged<bool> onLinkMessageActiveChanged;
 
   const InputSection({
     Key? key,
-    required this.inputTextController,
     required this.currentForgroundColor,
     required this.currentBackgroundColor,
     required this.pickerForgroundColor,
     required this.pickerBackgroundColor,
     required this.onForgroundColorChanged,
     required this.onBackgroundColorChanged,
-    required this.isLinkMessageActive,
-    required this.onLinkMessageActiveChanged,
   }) : super(key: key);
 
   @override
@@ -104,13 +89,6 @@ class InputSectionState extends State<InputSection> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Input Fields for the QRcode Message
-            MessageField(
-              inputTextController: widget.inputTextController,
-              isLinkMessageActive: widget.isLinkMessageActive,
-              onLinkMessageActiveChanged: widget.onLinkMessageActiveChanged,
-            ),
-            const SizedBox(height: 16),
             // Error Correction Text and Iconbutton
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

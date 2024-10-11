@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:qr_code_app/image_save.dart';
+import 'package:qr_code_app/qr_message.dart';
 import 'package:qr_code_app/qrcode_fields.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,14 +17,12 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   // Controllers
   final inputTextController = TextEditingController();
+  final secondaryInputTextController = TextEditingController();
   final inputDataLoss = MenuController();
 
   //QR Code Data
   String qrCodeImage = '';
   http.Response response = http.Response('', 200);
-
-  // Default State variables
-  bool isLinkMessageActive = false;
 
   //foregroundColor
   Color pickerForgroundColor = const Color(0x9E9E9E9E);
@@ -32,7 +31,7 @@ class HomePageState extends State<HomePage> {
     setState(() {
       currentForgroundColor = color;
     });
-    Future.delayed(const Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 150), () {
       Navigator.pop(context);
     });
   }
@@ -44,15 +43,8 @@ class HomePageState extends State<HomePage> {
     setState(() {
       currentBackgroundColor = color;
     });
-    Future.delayed(const Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 150), () {
       Navigator.pop(context);
-    });
-  }
-
-  // Method to know when the message field is set to link
-  void onLinkMessageActiveChanged(bool isActive) {
-    setState(() {
-      isLinkMessageActive = isActive;
     });
   }
 
@@ -66,16 +58,29 @@ class HomePageState extends State<HomePage> {
     String forgroundColor = currentForgroundColor.toHexString().substring(2);
     String backgroundColor = currentBackgroundColor.toHexString().substring(2);
 
-    // If link message is active, prepend the link type to the input text
-    if (isLinkMessageActive == true && selectedLinkType != LinkType.raw) {
-      inputString = selectedLinkType.toString().substring(9) +
-          '://' +
-          inputTextController.text;
+    switch (selectedMessageType) {
+      case MessageType.text:
+        inputString = inputTextController.text;
+        break;
+      case MessageType.link:
+        if (selectedLinkType != LinkType.raw) {
+          inputString =
+              '${selectedLinkType.toString().substring(9)}://${inputTextController.text}';
+        } else {
+          inputString = inputTextController.text;
+        }
+
+        break;
+      case MessageType.wifi:
+        inputString =
+            'WIFI:T:${selectedWifiType.toString().substring(9).toUpperCase()};S:${inputTextController.text};P:${secondaryInputTextController.text};;';
+        break;
     }
 
     // Construct the QR Code API URL
     final String qrCodeUrl =
         'https://image-charts.com/chart?chl=$inputString&choe=UTF-8&chs=200x200&cht=qr&chld=$errorString|0&icqrf=$forgroundColor&icqrb=$backgroundColor';
+    print(qrCodeUrl);
 
     try {
       // Make the API Call
@@ -119,17 +124,20 @@ class HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Input Fields for the QRcode Message
+            MessageField(
+              inputTextController: inputTextController,
+              secondaryInputTextController: secondaryInputTextController,
+            ),
+
             //QR code Input Fields
             InputSection(
-              inputTextController: inputTextController,
               currentForgroundColor: currentForgroundColor,
               currentBackgroundColor: currentBackgroundColor,
               pickerForgroundColor: pickerForgroundColor,
               pickerBackgroundColor: pickerBackgroundColor,
               onForgroundColorChanged: onForgroundColorChanged,
               onBackgroundColorChanged: onBackgroundColorChanged,
-              isLinkMessageActive: isLinkMessageActive,
-              onLinkMessageActiveChanged: onLinkMessageActiveChanged,
             ),
             // Display QR Code and buttons
             Card(
@@ -143,14 +151,20 @@ class HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    qrCodeImage.isNotEmpty
-                        ? Column(
-                            children: [
-                              Image.network(qrCodeImage), // Display the QR code
-                              const SizedBox(height: 16), // Space Bellow QR
-                            ],
-                          )
-                        : const SizedBox.shrink(), // Show nothing if no QR code
+                    SizedBox(
+                      child: qrCodeImage.isNotEmpty
+                          ? Column(
+                              children: [
+                                Image.network(
+                                  qrCodeImage, // Display the QR code
+                                  scale: 2,
+                                ),
+                                const SizedBox(height: 16), // Space Bellow QR
+                              ],
+                            )
+                          : const SizedBox
+                              .shrink(), // Show nothing if no QR code
+                    ),
                     // Create QR Code Button
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -162,7 +176,7 @@ class HomePageState extends State<HomePage> {
                               : 'Create QR Code'),
                         ),
                         if (qrCodeImage.isNotEmpty) ...[
-                          const SizedBox(width: 20), // Add space if QR code
+                          const SizedBox(width: 10), // Add space if QR code
                           FloatingActionButton(
                             onPressed: () {
                               saveImage(context, response);
