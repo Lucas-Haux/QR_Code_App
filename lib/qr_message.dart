@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MessageType { text, link, wifi }
+enum MessageType { text, link, wifi, email, contacts }
 
 enum LinkType { http, https, raw }
 
@@ -15,11 +15,13 @@ WifiType selectedWifiType = WifiType.wpa;
 class MessageField extends StatefulWidget {
   final TextEditingController inputTextController;
   final TextEditingController secondaryInputTextController;
+  final TextEditingController tertiaryInputTextController;
 
   const MessageField({
     Key? key,
     required this.inputTextController,
     required this.secondaryInputTextController,
+    required this.tertiaryInputTextController,
   }) : super(key: key);
 
   @override
@@ -34,7 +36,7 @@ class MessageFieldState extends State<MessageField> {
     return Card(
       color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
       elevation: 1,
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -43,35 +45,45 @@ class MessageFieldState extends State<MessageField> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(), // empty row will make all three cards in home_page the same size
-            // Messagetype selector
-            SegmentedButton<MessageType>(
-              showSelectedIcon: false,
-              emptySelectionAllowed: false,
-              segments: const [
-                ButtonSegment<MessageType>(
-                  value: MessageType.text,
-                  label: Text('text'),
+            SizedBox(
+              width: 300,
+              child: SegmentedButton<MessageType>(
+                showSelectedIcon: false,
+                emptySelectionAllowed: false,
+                segments: const [
+                  ButtonSegment<MessageType>(
+                    value: MessageType.text,
+                    label: Text('Text', style: TextStyle(fontSize: 10)),
+                  ),
+                  ButtonSegment<MessageType>(
+                    value: MessageType.link,
+                    label: Text('Link', style: TextStyle(fontSize: 10)),
+                  ),
+                  ButtonSegment<MessageType>(
+                    value: MessageType.wifi,
+                    label: Text('Wifi', style: TextStyle(fontSize: 10)),
+                  ),
+                  ButtonSegment<MessageType>(
+                    value: MessageType.email,
+                    label: Text('Email', style: TextStyle(fontSize: 10)),
+                  ),
+                  ButtonSegment(
+                    value: MessageType.contacts,
+                    label: Text('Contact', style: TextStyle(fontSize: 10)),
+                  ),
+                ],
+                selected: <MessageType>{selectedMessageType},
+                onSelectionChanged: (Set<MessageType> newSelection) {
+                  setState(
+                    () {
+                      selectedMessageType = newSelection.first;
+                    },
+                  );
+                },
+                style: SegmentedButton.styleFrom(
+                  elevation: 10,
                 ),
-                ButtonSegment<MessageType>(
-                  value: MessageType.link,
-                  label: Text('link'),
-                ),
-                ButtonSegment<MessageType>(
-                  value: MessageType.wifi,
-                  label: Text('wifi'),
-                ),
-              ],
-              selected: <MessageType>{selectedMessageType},
-              onSelectionChanged: (Set<MessageType> newSelection) {
-                setState(
-                  () {
-                    selectedMessageType = newSelection.first;
-                  },
-                );
-              },
-              style: SegmentedButton.styleFrom(
-                elevation: 10,
+                expandedInsets: EdgeInsets.all(0),
               ),
             ),
             const SizedBox(height: 16),
@@ -83,16 +95,24 @@ class MessageFieldState extends State<MessageField> {
               SizedBox(
                 height: 56,
                 width: 300,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    labelText: 'Message',
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a message',
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                child: Form(
+                  autovalidateMode: AutovalidateMode.always,
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    keyboardType: TextInputType.text,
+                    decoration: const InputDecoration(
+                      labelText: 'Message',
+                      border: OutlineInputBorder(),
+                      hintText: 'Enter a message',
+                      floatingLabelAlignment: FloatingLabelAlignment.center,
+                    ),
+                    controller: widget.inputTextController,
+                    validator: (_value) {
+                      return _value.toString().isEmpty
+                          ? 'Name Can Not Be Empty'
+                          : null;
+                    },
                   ),
-                  controller: widget.inputTextController,
                 ),
               )
 
@@ -109,21 +129,21 @@ class MessageFieldState extends State<MessageField> {
                         ButtonSegment<LinkType>(
                           value: LinkType.http,
                           label: Text(
-                            'http',
+                            'Http',
                             style: TextStyle(fontSize: 11),
                           ),
                         ),
                         ButtonSegment<LinkType>(
                           value: LinkType.https,
                           label: Text(
-                            'https',
+                            'Https',
                             style: TextStyle(fontSize: 11),
                           ),
                         ),
                         ButtonSegment<LinkType>(
                           value: LinkType.raw,
                           label: Text(
-                            'raw',
+                            'Raw',
                             style: TextStyle(fontSize: 11),
                           ),
                         ),
@@ -144,31 +164,41 @@ class MessageFieldState extends State<MessageField> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5),
+
+                  const SizedBox(height: 10),
                   // Link input field
                   SizedBox(
                     height: 56,
                     width: 300,
-                    child: TextField(
-                      textAlign: selectedLinkType == LinkType.raw
-                          ? TextAlign.center
-                          : TextAlign.left,
-                      keyboardType: TextInputType.url,
-                      decoration: InputDecoration(
-                        labelText: 'URL',
-                        border: const OutlineInputBorder(),
-                        hintText: 'Enter URL',
-                        hintStyle: const TextStyle(fontSize: 16),
-                        prefixStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: selectedLinkType == LinkType.raw
+                            ? TextAlign.center
+                            : TextAlign.left,
+                        keyboardType: TextInputType.url,
+                        decoration: InputDecoration(
+                          labelText: 'URL',
+                          border: const OutlineInputBorder(),
+                          hintText: 'Enter URL',
+                          hintStyle: const TextStyle(fontSize: 16),
+                          prefixStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          prefixText: selectedLinkType == LinkType.raw
+                              ? ''
+                              : selectedLinkType.toString().substring(9) +
+                                  '://',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
                         ),
-                        prefixText: selectedLinkType == LinkType.raw
-                            ? ''
-                            : selectedLinkType.toString().substring(9) + '://',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                        controller: widget.inputTextController,
+                        validator: (_value) {
+                          return _value.toString().isEmpty
+                              ? 'Link Can Not Be Empty'
+                              : null;
+                        },
                       ),
-                      controller: widget.inputTextController,
                     ),
                   ),
                 ],
@@ -181,16 +211,19 @@ class MessageFieldState extends State<MessageField> {
                   SizedBox(
                     height: 56,
                     width: 300,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Wi-Fi Name',
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter Wi-Fi SSID',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          labelText: 'Wi-Fi Name',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Wi-Fi SSID',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.inputTextController,
                       ),
-                      controller: widget.inputTextController,
                     ),
                   ),
                   const SizedBox(height: 10), // Spacing between fields
@@ -199,17 +232,25 @@ class MessageFieldState extends State<MessageField> {
                   SizedBox(
                     height: 56,
                     width: 300,
-                    child: TextField(
-                      textAlign: TextAlign.center,
-                      obscureText: true, // Hide password
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                        labelText: 'Wi-Fi Password',
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter Wi-Fi password',
-                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        obscureText: true, // Hide password
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          labelText: 'Wi-Fi Password',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Wi-Fi password',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.secondaryInputTextController,
+                        validator: (_value) {
+                          return _value.toString().isEmpty
+                              ? 'Password Can Not Be Empty'
+                              : null;
+                        },
                       ),
-                      controller: widget.secondaryInputTextController,
                     ),
                   ),
                   const SizedBox(
@@ -275,7 +316,141 @@ class MessageFieldState extends State<MessageField> {
                         MenuStyle(alignment: AlignmentDirectional.bottomStart),
                   )
                 ],
-              ),
+              )
+            // Email Text Fields
+            else if (selectedMessageType == MessageType.email)
+              Column(
+                children: [
+                  // Address
+                  SizedBox(
+                    height: 56,
+                    width: 300,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Email Address',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Address',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.inputTextController,
+                        validator: (_value) {
+                          return _value.toString().isEmpty
+                              ? 'Address Can Not Be Empty'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10), // Spacing between fields
+                  // Subject
+                  SizedBox(
+                    height: 56,
+                    width: 300,
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                        labelText: 'Email Subject',
+                        border: OutlineInputBorder(),
+                        hintText: 'Optional Subject',
+                        floatingLabelAlignment: FloatingLabelAlignment.center,
+                      ),
+                      controller: widget.secondaryInputTextController,
+                    ),
+                  ),
+                ],
+              )
+            // Contacts
+            else if (selectedMessageType == MessageType.contacts)
+              Column(
+                children: [
+                  // name
+                  SizedBox(
+                    height: 56,
+                    width: 300,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          labelText: 'Name',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Name',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.inputTextController,
+                        validator: (_value) {
+                          return _value.toString().isEmpty
+                              ? 'Name Can Not Be Empty'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10), // Spacing between fields
+                  // Phone
+                  SizedBox(
+                    height: 56,
+                    width: 300,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                          labelText: 'Phone Number',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Phone Number',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.secondaryInputTextController,
+                        validator: (value) {
+                          // Validate if the phone number is empty or not a valid number
+                          if (value == null || value.isEmpty) {
+                            return 'Phone Number Can Not Be Empty';
+                          }
+                          // Check if the input consists only of digits
+                          final RegExp numberRegExp = RegExp(r'^[0-9]+$');
+                          if (!numberRegExp.hasMatch(value)) {
+                            return 'Phone Number Must Be Numeric';
+                          }
+                          return null; // No validation error
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10), // Spacing between fields
+                  // Address
+                  SizedBox(
+                    height: 56,
+                    width: 300,
+                    child: Form(
+                      autovalidateMode: AutovalidateMode.always,
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        keyboardType: TextInputType.streetAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Address',
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter Address',
+                          floatingLabelAlignment: FloatingLabelAlignment.center,
+                        ),
+                        controller: widget.tertiaryInputTextController,
+                        validator: (_value) {
+                          return _value.toString().isEmpty
+                              ? 'Address Can Not Be Empty'
+                              : null;
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       ),

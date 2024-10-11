@@ -80,26 +80,40 @@ class InputSectionState extends State<InputSection> {
     return Card(
       color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
       elevation: 1,
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        constraints: const BoxConstraints(maxWidth: 350),
+        padding: EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Error Correction Text and Iconbutton
             Row(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Error Correction Level'),
+                const Text(
+                  'Error Correction Level',
+                ),
+                SizedBox(width: 5),
                 IconButton(
                   onPressed: () {
                     showHelpDialog(context); // help dialog
                   },
-                  icon: const Icon(Icons.help),
-                  iconSize: 17,
+                  icon: const Icon(
+                    Icons.help,
+                  ),
+                  iconSize: 20,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  style: ButtonStyle(
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    foregroundColor: WidgetStatePropertyAll(
+                        Theme.of(context).colorScheme.primaryFixedDim),
+                  ),
                 ),
               ],
             ),
@@ -138,72 +152,96 @@ class InputSectionState extends State<InputSection> {
               ),
             ),
             const SizedBox(height: 16),
-            // Foreground color Picker button
-            ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      titlePadding: const EdgeInsets.all(0),
-                      contentPadding: const EdgeInsets.all(0),
-                      content: SingleChildScrollView(
-                        child: MaterialPicker(
-                          pickerColor: widget.pickerForgroundColor,
-                          onColorChanged: widget.onForgroundColorChanged,
-                          enableLabel: true,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              label: const Text('Foreground Color'),
-              icon: Stack(
-                children: [
-                  Icon(Icons.color_lens, color: widget.currentForgroundColor),
-                  const Icon(Icons.color_lens_outlined, color: Colors.black),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                elevation: 5,
-                backgroundColor: Theme.of(context).colorScheme.secondaryFixed,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Background color Picker button
-            ElevatedButton.icon(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      titlePadding: const EdgeInsets.all(0),
-                      contentPadding: const EdgeInsets.all(0),
-                      content: SingleChildScrollView(
-                        child: MaterialPicker(
-                          pickerColor: widget.pickerBackgroundColor,
-                          onColorChanged: widget.onBackgroundColorChanged,
-                          enableLabel: true,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              label: const Text('Background Color'),
-              icon: Stack(
-                children: [
-                  Icon(Icons.color_lens, color: widget.currentBackgroundColor),
-                  const Icon(Icons.color_lens_outlined, color: Colors.black),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                elevation: 5,
-                backgroundColor: Theme.of(context).colorScheme.secondaryFixed,
-                foregroundColor: Theme.of(context).colorScheme.onPrimary,
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Foreground color Picker button
+                Container(
+                  constraints: BoxConstraints(maxWidth: 140, minWidth: 140),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            titlePadding: const EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
+                            content: SingleChildScrollView(
+                              child: MaterialPicker(
+                                pickerColor: widget.pickerForgroundColor,
+                                onColorChanged: widget.onForgroundColorChanged,
+                                enableLabel: true,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    label: Text(
+                      'Foreground',
+                      textScaler: TextScaler.linear(0.89),
+                    ),
+                    icon: Stack(
+                      children: [
+                        Icon(Icons.color_lens,
+                            color: widget.currentForgroundColor),
+                        const Icon(Icons.color_lens_outlined,
+                            color: Colors.black),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.secondaryFixed,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 15),
+                // Background color Picker button
+                Container(
+                  constraints: BoxConstraints(maxWidth: 140, minWidth: 140),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            titlePadding: const EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
+                            content: SingleChildScrollView(
+                              child: MaterialPicker(
+                                pickerColor: widget.pickerBackgroundColor,
+                                onColorChanged: widget.onBackgroundColorChanged,
+                                enableLabel: true,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    label: const Text(
+                      'Background',
+                      textScaler: TextScaler.linear(0.89),
+                    ),
+                    icon: Stack(
+                      children: [
+                        Icon(Icons.color_lens,
+                            color: widget.currentBackgroundColor),
+                        const Icon(Icons.color_lens_outlined,
+                            color: Colors.black),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 5,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.secondaryFixed,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
