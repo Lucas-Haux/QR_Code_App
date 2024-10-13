@@ -1,9 +1,11 @@
 import 'dart:io';
-import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
+import 'package:qr_code_app/settings_page.dart';
+import 'package:qr_code_app/ai_page.dart';
 import 'package:qr_code_app/image_save.dart';
 import 'package:qr_code_app/qr_message.dart';
 import 'package:qr_code_app/qrcode_fields.dart';
@@ -185,87 +187,136 @@ END:VCARD
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Input Fields for the QRcode Message
-            MessageField(
-              inputTextController: inputTextController,
-              secondaryInputTextController: secondaryInputTextController,
-              tertiaryInputTextController: tertiaryInputTextController,
-            ),
-
-            //QR code Input Fields
-            InputSection(
-              currentForgroundColor: currentForgroundColor,
-              currentBackgroundColor: currentBackgroundColor,
-              pickerForgroundColor: pickerForgroundColor,
-              pickerBackgroundColor: pickerBackgroundColor,
-              onForgroundColorChanged: onForgroundColorChanged,
-              onBackgroundColorChanged: onBackgroundColorChanged,
-            ),
-            // Display QR Code and buttons
-            Card(
-              color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
-              elevation: 1,
-              margin: const EdgeInsets.all(10),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Spacer(),
+              // Input Fields for the QRcode Message
+              MessageField(
+                inputTextController: inputTextController,
+                secondaryInputTextController: secondaryInputTextController,
+                tertiaryInputTextController: tertiaryInputTextController,
               ),
-              child: Container(
-                constraints:
-                    const BoxConstraints(maxWidth: 400, maxHeight: 350),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    qrCodeImage.isNotEmpty
-                        ? Container(
-                            padding: EdgeInsets.only(bottom: 30),
-                            constraints: const BoxConstraints(
-                                maxWidth: 300, maxHeight: 250),
-                            child: Material(
-                              elevation: 5,
-                              child: Image.network(
-                                qrCodeImage, // Display the QR code
-                              ),
-                            ),
-                          )
-                        : const SizedBox
-                            .shrink(), // Show no space if no QR code
 
-                    // Create QR Code Button
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Create/Recreate Button
-                        FloatingActionButton.extended(
-                          onPressed: _fetchQRCode,
-                          label: Text(qrCodeImage.isNotEmpty
-                              ? 'Recreate QR Code'
-                              : 'Create QR Code'),
-                        ),
-                        // Save Button
-                        if (qrCodeImage.isNotEmpty) ...[
-                          const SizedBox(width: 10), // space between buttons
-                          FloatingActionButton(
-                            onPressed: () {
-                              saveImage(context, response);
-                            },
-                            child: const Icon(Icons.save),
+              //QR code Input Fields
+              InputSection(
+                currentForgroundColor: currentForgroundColor,
+                currentBackgroundColor: currentBackgroundColor,
+                pickerForgroundColor: pickerForgroundColor,
+                pickerBackgroundColor: pickerBackgroundColor,
+                onForgroundColorChanged: onForgroundColorChanged,
+                onBackgroundColorChanged: onBackgroundColorChanged,
+              ),
+              // Display QR Code and buttons
+              Card(
+                color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+                elevation: 1,
+                margin: const EdgeInsets.all(10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Container(
+                  constraints:
+                      const BoxConstraints(maxWidth: 400, maxHeight: 350),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      qrCodeImage.isNotEmpty
+                          ? Container(
+                              padding: EdgeInsets.only(bottom: 30),
+                              constraints: const BoxConstraints(
+                                  maxWidth: 300, maxHeight: 250),
+                              child: Material(
+                                elevation: 5,
+                                child: Image.network(
+                                  qrCodeImage, // Display the QR code
+                                ),
+                              ),
+                            )
+                          : const SizedBox
+                              .shrink(), // Show no space if no QR code
+
+                      // Create QR Code Button
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Create/Recreate Button
+                          FloatingActionButton.extended(
+                            onPressed: _fetchQRCode,
+                            label: Text(qrCodeImage.isNotEmpty
+                                ? 'Recreate QR Code'
+                                : 'Create QR Code'),
                           ),
+                          // Save Button
+                          if (qrCodeImage.isNotEmpty) ...[
+                            const SizedBox(width: 10), // space between buttons
+                            FloatingActionButton(
+                              onPressed: () {
+                                saveImage(context, response);
+                              },
+                              child: const Icon(Icons.save),
+                            ),
+                          ],
                         ],
-                      ],
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+              Spacer(),
+            ],
+          ),
+          Column(
+            children: [
+              Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    child: FloatingActionButton.small(
+                      onPressed: () {
+                        // got to settings page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingsPage()),
+                        );
+                      },
+                      child: Icon(Icons.settings),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.onInverseSurface,
+                      heroTag: 'new',
+                    ),
+                  ),
+                  const Spacer(),
+                  // AI
+                  Container(
+                    padding: const EdgeInsets.all(18),
+                    child: FloatingActionButton.small(
+                      onPressed: () {
+                        // got to settings page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AIPage()),
+                        );
+                      },
+                      child: Icon(CupertinoIcons.sparkles),
+                      heroTag: 'idk',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

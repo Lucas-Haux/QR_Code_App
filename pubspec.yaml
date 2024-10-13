@@ -41,6 +41,7 @@ dependencies:
   flutter_file_dialog: ^3.0.2
   image: ^4.2.0
   dynamic_color: ^1.7.0
+  tflite_flutter: ^0.11.0
 
 dev_dependencies:
   flutter_test:
