@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_app/home_page.dart';
 import 'package:flutter/services.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+
+import 'package:qr_code_app/view/pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
