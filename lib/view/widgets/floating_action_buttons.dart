@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:qr_code_generator/model/qr_code_data.dart';
 
-import 'package:qr_code_app/view/pages/ai_page.dart';
-import 'package:qr_code_app/view/pages/settings_page.dart';
+import 'package:qr_code_generator/view/pages/ai_onboarding_page.dart';
+import 'package:qr_code_generator/view/pages/settings_page.dart';
 
 class SettingsAndAIButtons extends StatelessWidget {
   const SettingsAndAIButtons({super.key});
@@ -30,19 +31,27 @@ class SettingsAndAIButtons extends StatelessWidget {
         ),
         const Spacer(),
         // AI Button
-        Container(
-          padding: const EdgeInsets.all(18),
-          child: FloatingActionButton.small(
-            onPressed: () {
-              // Navigate to AI page
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AIPage()),
-              );
-            },
-            heroTag: 'ai',
-            child: const Icon(CupertinoIcons.sparkles),
-          ),
+        ValueListenableBuilder<String>(
+          valueListenable: qrCodeImageNotifier,
+          builder: (context, qrCodeImage, child) {
+            return qrCodeImage.isNotEmpty
+                ? Container(
+                    padding: const EdgeInsets.all(18),
+                    child: FloatingActionButton.small(
+                      onPressed: () {
+                        // Navigate to AI page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AiOnbordingPage()),
+                        );
+                      },
+                      heroTag: 'ai',
+                      child: const Icon(CupertinoIcons.sparkles),
+                    ),
+                  )
+                : Container();
+          },
         ),
       ],
     );

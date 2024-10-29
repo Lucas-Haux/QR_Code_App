@@ -8,8 +8,9 @@ class SettingsPage extends StatelessWidget {
         title: Text('Settings'),
       ),
       body: Center(
-        child:
-            Text('This is the settings page', style: TextStyle(fontSize: 24)),
+        child: Text(
+            'This is the settings page: change output qr size 200x200, ',
+            style: TextStyle(fontSize: 24)),
       ),
     );
   }

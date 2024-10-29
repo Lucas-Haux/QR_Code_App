@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "376071672199",
+    "project_id": "qr-code-generator-a667f",
+    "storage_bucket": "qr-code-generator-a667f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376071672199:android:a09858f294cbf3ab890322",
+        "android_client_info": {
+          "package_name": "com.lucashaux.qr_code_generator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9ZTUHSTUxaSgtXAsHZihS3obgURO46Ss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

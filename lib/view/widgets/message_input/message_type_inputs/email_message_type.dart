@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class emailMessageInput extends StatelessWidget {
   const emailMessageInput({super.key});

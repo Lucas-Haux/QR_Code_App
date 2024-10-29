@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
-import 'package:qr_code_app/view/widgets/message_input/message_type_inputs/wifi_message_type_menu.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
+import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/wifi_message_type_menu.dart';
 
 class wifiMessageInput extends StatelessWidget {
   const wifiMessageInput({super.key});

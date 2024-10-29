@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-class QRCodeDisplay extends StatelessWidget {
-  final ValueNotifier<String>
-      qrCodeImageNotifier; // ValueNotifier for QR code image
+import 'package:qr_code_generator/model/qr_code_data.dart';
 
+class QRCodeDisplay extends StatelessWidget {
   const QRCodeDisplay({
     Key? key,
-    required this.qrCodeImageNotifier, // Require the notifier to be passed in
   }) : super(key: key);
 
   @override

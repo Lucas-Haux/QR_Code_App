@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class ColorSelectorsRow extends StatefulWidget {
   const ColorSelectorsRow({super.key});
@@ -38,7 +38,7 @@ class _ColorSelectorsRowState extends State<ColorSelectorsRow> {
         // Foreground color Picker button
         Container(
           constraints: const BoxConstraints(maxWidth: 140, minWidth: 140),
-          child: ElevatedButton.icon(
+          child: FilledButton.tonalIcon(
             onPressed: () {
               showDialog(
                 context: context,
@@ -79,7 +79,7 @@ class _ColorSelectorsRowState extends State<ColorSelectorsRow> {
         // Background color Picker button
         Container(
           constraints: const BoxConstraints(maxWidth: 140, minWidth: 140),
-          child: ElevatedButton.icon(
+          child: FilledButton.tonalIcon(
             onPressed: () {
               showDialog(
                 context: context,

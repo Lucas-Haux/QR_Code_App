@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class MessageSelectorButton extends StatefulWidget {
   final ValueNotifier<MessageType> messageTypeNotifier;
@@ -15,7 +15,7 @@ class _MessageSelectorButtonState extends State<MessageSelectorButton> {
     setState(() {
       selectedMessageType = newType;
     });
-    print('messagetype update $selectedMessageType');
+     print('messagetype update $selectedMessageType');
   }
 
   @override

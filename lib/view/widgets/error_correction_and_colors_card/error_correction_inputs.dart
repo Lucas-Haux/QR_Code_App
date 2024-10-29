@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/view/widgets/error_correction_and_colors_card/error_correction_button.dart';
-import 'package:qr_code_app/model/error_correction_dialog.dart';
-import 'package:qr_code_app/view/widgets/error_correction_and_colors_card/color_selectors.dart';
+import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/error_correction_button.dart';
+import 'package:qr_code_generator/model/error_correction_dialog.dart';
+import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/color_selectors.dart';
 
 class ErrorCorrectionsAndColorCard extends StatefulWidget {
   const ErrorCorrectionsAndColorCard({super.key});
@@ -50,7 +50,7 @@ class _ErrorCorrectionsAndColorCardState
                   style: ButtonStyle(
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     foregroundColor: WidgetStatePropertyAll(
-                        Theme.of(context).colorScheme.primaryFixedDim),
+                        Theme.of(context).colorScheme.tertiaryFixedDim),
                   ),
                 ),
               ],

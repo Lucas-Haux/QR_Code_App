@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_app/model/qr_code_data.dart'; // Your QR code logic file
-import 'package:qr_code_app/model/image_save.dart';
+import 'package:qr_code_generator/model/qr_code_data.dart'; // Your QR code logic file
+import 'package:qr_code_generator/model/image_save.dart';
+
+String errorMessage = '';
 
 class QRCodeActionButtons extends StatefulWidget {
-  final ValueNotifier<String> qrCodeImageNotifier;
-
   const QRCodeActionButtons({
-    required this.qrCodeImageNotifier,
     Key? key,
   }) : super(key: key);
 
@@ -24,27 +23,39 @@ class _QRCodeActionButtonsState extends State<QRCodeActionButtons> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Create/Recreate Button
-        FloatingActionButton.extended(
-          onPressed: () {
-            qrCodeData.fetchQRCode(context); // Fetch QR code data
-            widget.qrCodeImageNotifier.value =
-                qrCodeData.constructQRCodeUrl(); // Update the notifier
-            print(qrCodeData.constructQRCodeUrl());
+        ValueListenableBuilder<String>(
+          valueListenable: qrCodeImageNotifier,
+          builder: (context, qrCodeImage, child) {
+            return FilledButton(
+              onPressed: () {
+                qrCodeData.fetchQRCode(context); // Fetch QR code data
+                errorMessage.isNotEmpty
+                    ? ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(errorMessage),
+                          backgroundColor: Colors.red,
+                        ),
+                      )
+                    : SizedBox.shrink();
+
+                // Update the notifier
+                print(qrCodeImage);
+              },
+              child: Text(qrCodeImage.isNotEmpty
+                  ? 'Recreate QR Code'
+                  : 'Create QR Code'),
+            );
           },
-          label: Text(
-              qrCodeImage.isNotEmpty ? 'Recreate QR Code' : 'Create QR Code'),
         ),
         const SizedBox(width: 10),
         // Save Button
         ValueListenableBuilder<String>(
-          valueListenable: widget.qrCodeImageNotifier,
+          valueListenable: qrCodeImageNotifier,
           builder: (context, qrCodeImage, child) {
             return qrCodeImage.isNotEmpty
-                ? FloatingActionButton(
+                ? IconButton.filledTonal(
                     onPressed: () => saveImage(context, response),
-                    child: const Icon(Icons.save),
-                    backgroundColor:
-                        Theme.of(context).colorScheme.tertiaryContainer,
+                    icon: const Icon(Icons.save),
                   )
                 : const SizedBox.shrink();
           },

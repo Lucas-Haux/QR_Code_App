@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class contactsMessageInput extends StatelessWidget {
   const contactsMessageInput({super.key});

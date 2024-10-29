@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_app/model/inputs_data.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class LinkButton extends StatefulWidget {
   const LinkButton({super.key});
@@ -8,6 +8,9 @@ class LinkButton extends StatefulWidget {
   @override
   State<LinkButton> createState() => _LinkButtonState();
 }
+
+ValueNotifier<LinkType> linkTypeNotifier =
+    ValueNotifier<LinkType>(LinkType.https);
 
 class _LinkButtonState extends State<LinkButton> {
   @override
@@ -45,6 +48,7 @@ class _LinkButtonState extends State<LinkButton> {
           setState(
             () {
               selectedLinkType = newSelection.first;
+              linkTypeNotifier.value = newSelection.first;
             },
           );
         },

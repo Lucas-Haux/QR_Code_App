@@ -5,7 +5,6 @@ import 'qr_code_action_buttons.dart';
 class DisplayAndActionsCard extends StatelessWidget {
   // final QRCodeData qrCodeData =
   // QRCodeData(); // Create an instance of QRCodeData
-  final ValueNotifier<String> qrCodeImageNotifier = ValueNotifier<String>('');
 
   DisplayAndActionsCard({super.key});
 
@@ -19,17 +18,16 @@ class DisplayAndActionsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 400, maxHeight: 350),
+        constraints:
+            const BoxConstraints(maxWidth: 340, maxHeight: 350, minWidth: 340),
         padding: const EdgeInsets.all(20),
-        child: Column(
+        child: const Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            QRCodeDisplay(
-                qrCodeImageNotifier:
-                    qrCodeImageNotifier), // Displays the QR code
+            QRCodeDisplay(), // Displays the QR code
 
             // QR Code Buttons: create, recreate, save
-            QRCodeActionButtons(qrCodeImageNotifier: qrCodeImageNotifier),
+            QRCodeActionButtons(),
           ],
         ),
       ),

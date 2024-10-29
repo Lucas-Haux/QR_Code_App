@@ -25,3 +25,26 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+analysis_options.yaml
+
+# Android related
+**/android/**/gradle-wrapper.jar
+.gradle/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+*.jks
+
+#firebase
+.firebaserc
+firebase.json
+flutterfire
+functions/
+node_modules/
+
+.idea/
+
