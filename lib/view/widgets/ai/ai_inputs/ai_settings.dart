@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/model/ai_image_data.dart';
-import 'package:qr_code_generator/view/widgets/ai/ai_inputs/ai_dialog.dart';
+import 'package:qr_code_generator/view/components/ai_help_dialogs.dart';
 
 class AiSettings extends StatefulWidget {
   const AiSettings({super.key});

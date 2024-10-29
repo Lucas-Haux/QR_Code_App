@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_generator/model/error_correction_dialog.dart';
+import 'package:qr_code_generator/view/components/error_correction_dialog.dart';
 import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/color_selectors.dart';
 import 'package:qr_code_generator/model/inputs_data.dart';
 

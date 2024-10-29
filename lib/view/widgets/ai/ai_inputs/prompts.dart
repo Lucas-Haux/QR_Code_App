@@ -134,17 +134,17 @@ class AiPromptsState extends State<AiPrompts> {
             const SizedBox(height: 20),
             // TODO sizedbox for button and forms should be around column
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 300),
+              constraints: const BoxConstraints(maxWidth: 300),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ConstrainedBox(
-                    constraints: BoxConstraints(maxWidth: 250),
+                    constraints: const BoxConstraints(maxWidth: 250),
                     child: OutlinedButton.icon(
                       onPressed: () {
                         pickImage();
                       },
-                      icon: Icon(Icons.image_search),
+                      icon: const Icon(Icons.image_search),
                       label: AutoSizeText(
                         image == null ? 'Refence Image' : basename(image!.path),
                         textAlign: TextAlign.center,
