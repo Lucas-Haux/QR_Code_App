@@ -48,3 +48,4 @@ node_modules/
 
 .idea/
 
+lib/firebase_options.dart
