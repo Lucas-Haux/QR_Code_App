@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/model/inputs_data.dart';
-import 'package:qr_code_generator/view/widgets/message_input/message_input_button.dart';
 import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/text_message_type.dart';
 import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/link_message_type.dart';
 import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/wifi_message_type.dart';
@@ -9,7 +8,7 @@ import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs
 import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/contacts_message_type.dart';
 
 class MessageInputCard extends StatelessWidget {
-  MessageInputCard({super.key});
+  const MessageInputCard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +40,65 @@ class MessageInputCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MessageSelectorButton extends StatefulWidget {
+  final ValueNotifier<MessageType> messageTypeNotifier;
+  const MessageSelectorButton({super.key, required this.messageTypeNotifier});
+
+  @override
+  State<MessageSelectorButton> createState() => _MessageSelectorButtonState();
+}
+
+class _MessageSelectorButtonState extends State<MessageSelectorButton> {
+  void updateMessageType(MessageType newType) {
+    setState(() {
+      selectedMessageType = newType;
+    });
+    print('messagetype update $selectedMessageType');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      child: SegmentedButton<MessageType>(
+        showSelectedIcon: false,
+        emptySelectionAllowed: false,
+        segments: const [
+          ButtonSegment<MessageType>(
+            value: MessageType.text,
+            label: Text('Text', style: TextStyle(fontSize: 10)),
+          ),
+          ButtonSegment<MessageType>(
+            value: MessageType.link,
+            label: Text('Link', style: TextStyle(fontSize: 10)),
+          ),
+          ButtonSegment<MessageType>(
+            value: MessageType.wifi,
+            label: Text('Wifi', style: TextStyle(fontSize: 10)),
+          ),
+          ButtonSegment<MessageType>(
+            value: MessageType.email,
+            label: Text('Email', style: TextStyle(fontSize: 10)),
+          ),
+          ButtonSegment(
+            value: MessageType.contacts,
+            label: Text('Contact', style: TextStyle(fontSize: 10)),
+          ),
+        ],
+        selected: <MessageType>{selectedMessageType},
+        onSelectionChanged: (Set<MessageType> newSelection) {
+          updateMessageType(newSelection.first);
+          widget.messageTypeNotifier.value = newSelection.first;
+        },
+        style: SegmentedButton.styleFrom(
+          elevation: 10,
+        ),
+        expandedInsets: const EdgeInsets.all(0),
       ),
     );
   }

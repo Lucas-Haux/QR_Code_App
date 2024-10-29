@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/error_correction_button.dart';
 import 'package:qr_code_generator/model/error_correction_dialog.dart';
 import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/color_selectors.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 class ErrorCorrectionsAndColorCard extends StatefulWidget {
   const ErrorCorrectionsAndColorCard({super.key});
@@ -58,10 +58,53 @@ class _ErrorCorrectionsAndColorCardState
             // SegmentedButton to select ErrorCorrection value
             const ErrorCorrectionButton(),
 
+            const SizedBox(height: 5),
+
             const ColorSelectorsRow(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class ErrorCorrectionButton extends StatefulWidget {
+  const ErrorCorrectionButton({super.key});
+
+  @override
+  State<ErrorCorrectionButton> createState() => _ErrorCorrectionButtonState();
+}
+
+class _ErrorCorrectionButtonState extends State<ErrorCorrectionButton> {
+  @override
+  Widget build(BuildContext context) {
+    return SegmentedButton<ErrorCorrectionLevel>(
+      showSelectedIcon: false,
+      emptySelectionAllowed: false,
+      segments: const [
+        ButtonSegment<ErrorCorrectionLevel>(
+          value: ErrorCorrectionLevel.L,
+          label: Text('Low'),
+        ),
+        ButtonSegment(
+          value: ErrorCorrectionLevel.M,
+          label: Text('Medium'),
+        ),
+        ButtonSegment(
+          value: ErrorCorrectionLevel.Q,
+          label: Text('Quartile'),
+        ),
+        ButtonSegment(
+          value: ErrorCorrectionLevel.H,
+          label: Text('High'),
+        ),
+      ],
+      selected: <ErrorCorrectionLevel>{selectedErrorCorrectionLevel},
+      onSelectionChanged: (Set<ErrorCorrectionLevel> newSelection) {
+        setState(() {
+          selectedErrorCorrectionLevel = newSelection.first;
+        });
+      },
     );
   }
 }

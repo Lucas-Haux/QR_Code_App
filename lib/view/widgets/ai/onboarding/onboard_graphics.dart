@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:auto_size_text/auto_size_text.dart';
-
-class graphics extends StatelessWidget {
-  const graphics({super.key});
+class Graphics extends StatelessWidget {
+  const Graphics({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        // Beer Image
         Container(
           padding: const EdgeInsets.all(25),
           child: ClipRRect(
@@ -20,19 +19,19 @@ class graphics extends StatelessWidget {
             ),
           ),
         ),
+
         // Card 1
         Card(
           color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
           elevation: 1,
           margin: const EdgeInsets.all(25),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
             padding: const EdgeInsets.all(25),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
                 children: <TextSpan>[
                   // Title 1
                   TextSpan(
@@ -44,7 +43,7 @@ class graphics extends StatelessWidget {
                       height: 1,
                     ),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text:
                         'Traditional QR codes often disrupt the design flow of packaging and branding materials. '
                         'With AI-generated QR code art, you can seamlessly blend functionality with creativity. '
@@ -57,21 +56,18 @@ class graphics extends StatelessWidget {
           ),
         ),
 
-        // Spacer
-
         // Card 2
         Card(
           color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
           elevation: 1,
           margin: const EdgeInsets.all(25),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
             padding: const EdgeInsets.all(25),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
                 children: <TextSpan>[
                   // Title 2
                   TextSpan(
@@ -83,7 +79,7 @@ class graphics extends StatelessWidget {
                       height: 1,
                     ),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text:
                         'By using customized, eye-catching QR codes, you turn a simple scan into a memorable brand experience. '
                         'These codes pique curiosity and encourage interaction, driving more customers to scan and connect with your digital content.',
@@ -95,22 +91,19 @@ class graphics extends StatelessWidget {
           ),
         ),
 
-        // Spacer
-
         // Card 3
         Card(
           color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
           elevation: 1,
           margin: const EdgeInsets.all(25),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: Container(
-            constraints: BoxConstraints(minWidth: 360, maxWidth: 360),
+            constraints: const BoxConstraints(minWidth: 360, maxWidth: 360),
             padding: const EdgeInsets.all(25),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 18, color: Colors.black),
+                style: const TextStyle(fontSize: 18, color: Colors.black),
                 children: <TextSpan>[
                   // Title 3
                   TextSpan(
@@ -122,7 +115,7 @@ class graphics extends StatelessWidget {
                       height: 1,
                     ),
                   ),
-                  TextSpan(
+                  const TextSpan(
                     text:
                         'AI-generated QR codes are adaptable to any style. From artistic illustrations to product-themed designs, '
                         'you can tailor QR codes to fit different campaigns or seasons, enhancing your marketing flexibility. '

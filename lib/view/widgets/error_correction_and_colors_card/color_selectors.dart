@@ -11,22 +11,26 @@ class ColorSelectorsRow extends StatefulWidget {
 }
 
 class _ColorSelectorsRowState extends State<ColorSelectorsRow> {
+  void _closeDialogWithDelay() {
+    Future.delayed(const Duration(milliseconds: 150), () {
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    });
+  }
+
   void onForegroundColorChanged(Color color) {
     setState(() {
       currentForegroundColor = color;
     });
-    Future.delayed(const Duration(milliseconds: 150), () {
-      Navigator.pop(context);
-    });
+    _closeDialogWithDelay();
   }
 
   void onBackgroundColorChanged(Color color) {
     setState(() {
       currentBackgroundColor = color;
     });
-    Future.delayed(const Duration(milliseconds: 150), () {
-      Navigator.pop(context);
-    });
+    _closeDialogWithDelay();
   }
 
   @override

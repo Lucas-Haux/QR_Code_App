@@ -5,9 +5,9 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
       ),
-      body: Center(
+      body: const Center(
         child: Text(
             'This is the settings page: change output qr size 200x200, ',
             style: TextStyle(fontSize: 24)),

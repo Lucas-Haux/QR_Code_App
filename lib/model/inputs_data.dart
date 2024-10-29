@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_generator/view/widgets/qr_display_and_buttons/qr_code_action_buttons.dart';
+import 'package:qr_code_generator/view/widgets/qr_display_actions_card.dart';
 
 enum MessageType { text, link, wifi, email, contacts }
 

@@ -48,8 +48,8 @@ class wifiMessageInput extends StatelessWidget {
                 floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
               controller: secondaryInputTextController,
-              validator: (_value) {
-                return _value.toString().isEmpty
+              validator: (value) {
+                return value.toString().isEmpty
                     ? 'Password Can Not Be Empty'
                     : null;
               },

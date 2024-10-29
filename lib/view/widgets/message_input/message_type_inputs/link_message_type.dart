@@ -44,8 +44,8 @@ class linkMessageInput extends StatelessWidget {
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                   ),
                   controller: inputTextController,
-                  validator: (_value) {
-                    return _value.toString().isEmpty
+                  validator: (value) {
+                    return value.toString().isEmpty
                         ? 'Link Can Not Be Empty'
                         : null;
                   },

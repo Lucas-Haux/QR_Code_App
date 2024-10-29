@@ -25,8 +25,8 @@ class emailMessageInput extends StatelessWidget {
                 floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
               controller: inputTextController,
-              validator: (_value) {
-                return _value.toString().isEmpty
+              validator: (value) {
+                return value.toString().isEmpty
                     ? 'Address Can Not Be Empty'
                     : null;
               },

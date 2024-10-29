@@ -1,16 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:qr_code_generator/view/widgets/ai/onboarding/shared_controller.dart';
 
-class carouselQR extends StatefulWidget {
-  carouselQR({super.key});
+class ShowcaseCarousel extends StatefulWidget {
+  const ShowcaseCarousel({super.key});
 
   @override
-  State<carouselQR> createState() => _carouselQRState();
+  State<ShowcaseCarousel> createState() => _ShowcaseCarouselState();
 }
 
-class _carouselQRState extends State<carouselQR> {
+class _ShowcaseCarouselState extends State<ShowcaseCarousel> {
   late final PageController carouselController =
       PageController(initialPage: 10);
 
@@ -51,6 +49,24 @@ class _carouselQRState extends State<carouselQR> {
         ),
       ),
     );
+  }
+}
+
+class SharedCarouselController {
+  static final SharedCarouselController _instance =
+      SharedCarouselController._internal();
+
+  factory SharedCarouselController() {
+    return _instance;
+  }
+
+  SharedCarouselController._internal();
+
+  late final PageController carouselController =
+      PageController(initialPage: 10, viewportFraction: 1 / 2);
+
+  void dispose() {
+    carouselController.dispose(); // Dispose when no longer needed
   }
 }
 

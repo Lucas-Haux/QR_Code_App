@@ -50,21 +50,26 @@ class _WifiMessageTypeMenuState extends State<WifiMessageTypeMenu> {
       builder:
           (BuildContext context, MenuController controller, Widget? child) {
         return OutlinedButton(
-            // focusNode: _buttonFocusNode,
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
-            child: Text('Encryption Type: ' +
-                selectedWifiType.toString().substring(9).toUpperCase()),
-            style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)))));
+          // focusNode: _buttonFocusNode,
+          onPressed: () {
+            if (controller.isOpen) {
+              controller.close();
+            } else {
+              controller.open();
+            }
+          },
+          style: TextButton.styleFrom(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+          ),
+          child: Text(
+              'Encryption Type:  ${selectedWifiType.toString().substring(9).toUpperCase()}'),
+        );
       },
-      style: MenuStyle(alignment: AlignmentDirectional.bottomStart),
+      style: const MenuStyle(alignment: AlignmentDirectional.bottomStart),
     );
   }
 }

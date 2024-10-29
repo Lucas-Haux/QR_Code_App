@@ -12,14 +12,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'ai_settings.dart';
 
-class aiPrompts extends StatefulWidget {
-  const aiPrompts({super.key});
+class AiPrompts extends StatefulWidget {
+  const AiPrompts({super.key});
 
   @override
-  State<aiPrompts> createState() => _aiPromptsState();
+  State<AiPrompts> createState() => AiPromptsState();
 }
 
-class _aiPromptsState extends State<aiPrompts> {
+class AiPromptsState extends State<AiPrompts> {
   File? image;
 
   Future pickImage() async {

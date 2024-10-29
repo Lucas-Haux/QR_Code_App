@@ -22,8 +22,8 @@ class textMessageInput extends StatelessWidget {
             floatingLabelAlignment: FloatingLabelAlignment.center,
           ),
           controller: inputTextController,
-          validator: (_value) {
-            return _value.toString().isEmpty ? 'Name Can Not Be Empty' : null;
+          validator: (value) {
+            return value.toString().isEmpty ? 'Name Can Not Be Empty' : null;
           },
         ),
       ),

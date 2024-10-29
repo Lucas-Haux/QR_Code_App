@@ -149,7 +149,7 @@ class LabelRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('${label}'),
+        Text(label),
         const SizedBox(width: 5), // space between Text and Icon
 
         // Help Button

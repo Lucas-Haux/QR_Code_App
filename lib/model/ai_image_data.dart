@@ -41,7 +41,7 @@ Future<void> generateAiImage() async {
   } else {
     var result = json.decode(response.body);
 
-    print("Failed to generate QR code: ${result}");
+    print("Failed to generate QR code: $result");
   }
   aiNotifier.value = aiImage;
   aiImageResponse = await http.get(Uri.parse(aiImage));
