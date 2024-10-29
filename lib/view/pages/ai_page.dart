@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/view/widgets/ai/ai_inputs/ai_settings.dart';
 import 'package:qr_code_generator/view/widgets/ai/ai_inputs/prompts.dart';
+import 'package:qr_code_generator/view/widgets/ai/ai_display_and_actions_card.dart';
 
 class AIPage extends StatelessWidget {
   @override
@@ -19,6 +20,7 @@ class AIPage extends StatelessWidget {
             children: [
               AiPrompts(),
               AiSettings(),
+              AiDisplayCard(),
             ],
           ),
         ),

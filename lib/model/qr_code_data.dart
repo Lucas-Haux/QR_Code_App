@@ -1,13 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:qr_code_generator/model/inputs_data.dart';
+import 'package:qr_code_generator/main.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 String qrCodeImage = '';
 ValueNotifier<String> qrCodeImageNotifier = ValueNotifier<String>('');
 
 http.Response response = http.Response('', 200);
+
+Color usedForgroundColor = currentForegroundColor;
+Color usedBackgroundColor = currentBackgroundColor;
+ErrorCorrectionLevel usedErrorCorrectionLevel = selectedErrorCorrectionLevel;
 
 String constructQRCodeUrl() {
   String errorString = selectedErrorCorrectionLevel.toString().substring(21);
@@ -24,9 +28,11 @@ String constructQRCodeUrl() {
 }
 
 Future<void> fetchQRCode(BuildContext context) async {
-  String activeUrl = constructQRCodeUrl();
+  usedForgroundColor = currentForegroundColor;
+  usedBackgroundColor = currentBackgroundColor;
+  usedErrorCorrectionLevel = selectedErrorCorrectionLevel;
 
-  final scaffoldMessenger = ScaffoldMessenger.of(context);
+  String activeUrl = constructQRCodeUrl();
 
   // Make Api called
   try {
@@ -37,21 +43,17 @@ Future<void> fetchQRCode(BuildContext context) async {
       qrCodeImageNotifier.value = activeUrl.replaceAll(' ', '%20');
       qrCodeImage = activeUrl.replaceAll(' ', '%20');
     } else {
-      print('qrcode fetch failed: ${response.reasonPhrase}');
+      SnackBarManager.showSnackBar(
+        'Error',
+        '${response.reasonPhrase}',
+        ContentType.failure,
+      );
     }
   } catch (error) {
-    // Handle different types of errors and display an appropriate message
-    String errorMessage;
-
-    if (error is FormatException) {
-      errorMessage = 'Invalid QR code format. Please check your input.';
-    } else if (error is SignalException) {
-      errorMessage = 'Network error. Please check your internet connection.';
-    } else {
-      errorMessage = 'An unexpected error occurred: $error';
-    }
-
-    // Show errorMessage in SnackBar
-    scaffoldMessenger.showSnackBar(SnackBar(content: Text(errorMessage)));
+    SnackBarManager.showSnackBar(
+      'Error',
+      '$error',
+      ContentType.failure,
+    );
   }
 }

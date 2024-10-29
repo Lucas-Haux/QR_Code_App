@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:qr_code_generator/main.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 import 'package:qr_code_generator/model/ai_json_encode.dart';
 
@@ -41,7 +43,35 @@ Future<void> generateAiImage() async {
   } else {
     var result = json.decode(response.body);
 
-    print("Failed to generate QR code: $result");
+    // Step 2: Extract the inner JSON string from the "error" field
+    String innerJsonString = result['error'].split(' - ')[1];
+
+    var innerJson = json.decode(innerJsonString);
+
+    String errorMessage = innerJson['detail']['error'];
+
+    print(errorMessage); // This will print: "No QR code found in image"
+
+    if (errorMessage == 'No QR code found in image') {
+      SnackBarManager.showSnackBar(
+        'Error',
+        'Provided QR Code is not acceptable. Often caused by hard to read colors.',
+        ContentType.failure,
+      );
+    } else if (errorMessage ==
+        'AssertionError: safety_checker: at least one of text, image is required') {
+      SnackBarManager.showSnackBar(
+        'Error',
+        'To Generate AI QR Code you must provide a text prompt or an image prompt',
+        ContentType.failure,
+      );
+    } else {
+      SnackBarManager.showSnackBar(
+        'Error',
+        errorMessage,
+        ContentType.failure,
+      );
+    }
   }
   aiNotifier.value = aiImage;
   aiImageResponse = await http.get(Uri.parse(aiImage));

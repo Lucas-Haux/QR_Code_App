@@ -4,9 +4,6 @@ import 'package:qr_code_generator/model/qr_code_data.dart';
 import 'package:qr_code_generator/model/image_save.dart';
 
 class DisplayAndActionsCard extends StatelessWidget {
-  // final QRCodeData qrCodeData =
-  // QRCodeData(); // Create an instance of QRCodeData
-
   const DisplayAndActionsCard({super.key});
 
   @override
@@ -50,8 +47,6 @@ class DisplayAndActionsCard extends StatelessWidget {
   }
 }
 
-String errorMessage = '';
-
 class QRCodeActionButtons extends StatefulWidget {
   const QRCodeActionButtons({
     Key? key,
@@ -73,17 +68,7 @@ class QRCodeActionButtonsState extends State<QRCodeActionButtons> {
           valueListenable: qrCodeImageNotifier,
           builder: (context, qrCodeImage, child) {
             return FilledButton(
-              onPressed: () {
-                fetchQRCode(context); // Fetch QR code data
-                errorMessage.isNotEmpty
-                    ? ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(errorMessage),
-                          backgroundColor: Colors.red,
-                        ),
-                      )
-                    : const SizedBox.shrink();
-              },
+              onPressed: () => fetchQRCode(context), // Fetch QR code data
               child: Text(qrCodeImage.isNotEmpty
                   ? 'Recreate QR Code'
                   : 'Create QR Code'),

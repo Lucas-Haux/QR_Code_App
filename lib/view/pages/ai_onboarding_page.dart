@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:qr_code_generator/main.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:qr_code_generator/model/inputs_data.dart';
 
 import 'package:qr_code_generator/view/pages/ai_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'package:qr_code_generator/view/widgets/ai/onboarding/onboard_graphics.dart';
 import 'package:qr_code_generator/view/widgets/ai/onboarding/aiqr_carousel.dart';
+import 'package:qr_code_generator/model/qr_code_data.dart';
 
 class AiOnbordingPage extends StatefulWidget {
   const AiOnbordingPage({super.key});
@@ -34,6 +38,28 @@ class _AiOnbordingPageState extends State<AiOnbordingPage> {
                       context,
                       MaterialPageRoute(builder: (context) => AIPage()),
                     );
+                    if (usedErrorCorrectionLevel != ErrorCorrectionLevel.H) {
+                      SnackBarManager.showSnackBar(
+                        'Warning',
+                        'Error Correction Level isnt set to High. This could make the QR Code harder to scan.',
+                        ContentType.warning,
+                      );
+                    }
+
+                    if (usedForgroundColor != const Color(0xff000000)) {
+                      SnackBarManager.showSnackBar(
+                        'Warning',
+                        'Forground color isnt Black. This could result in failures.',
+                        ContentType.warning,
+                      );
+                    }
+                    if (currentBackgroundColor != const Color(0xffffffff)) {
+                      SnackBarManager.showSnackBar(
+                        'Warning',
+                        'Background color isnt white. This could result in failures.',
+                        ContentType.warning,
+                      );
+                    }
                   },
                   child: const Text('sign in with google to start')),
               centerTitle: true,

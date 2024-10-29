@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:qr_code_generator/main.dart';
 
 Future<void> saveImage(BuildContext context, response) async {
-  String? errorMessage;
-  final scaffoldMessenger = ScaffoldMessenger.of(context);
-
   try {
     // Get temporary directory
     final dir = await getTemporaryDirectory();
@@ -30,17 +29,20 @@ Future<void> saveImage(BuildContext context, response) async {
       final finalPath = await FlutterFileDialog.saveFile(params: params);
 
       if (finalPath != null) {
-        errorMessage = 'Image saved to disk';
+        SnackBarManager.showSnackBar(
+          'Success',
+          'Image Saved to "${file.path}"',
+          ContentType.success,
+        );
       }
     }
 
     // Errors
   } catch (e) {
-    errorMessage = 'An error occurred while saving the image Error: $e';
-  }
-
-  // Show error in stackbar
-  if (errorMessage != null) {
-    scaffoldMessenger.showSnackBar(SnackBar(content: Text(errorMessage)));
+    SnackBarManager.showSnackBar(
+      'Error',
+      '$e',
+      ContentType.failure,
+    );
   }
 }

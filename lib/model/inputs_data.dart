@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qr_code_generator/view/widgets/qr_display_actions_card.dart';
+import 'package:qr_code_generator/main.dart';
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
 enum MessageType { text, link, wifi, email, contacts }
 
@@ -20,8 +21,8 @@ LinkType selectedLinkType = LinkType.https;
 WifiType selectedWifiType = WifiType.wpa;
 ErrorCorrectionLevel selectedErrorCorrectionLevel = ErrorCorrectionLevel.L;
 
-Color pickerForegroundColor = const Color(0x000000);
-Color pickerBackgroundColor = const Color(0xFFFFFF);
+Color pickerForegroundColor = const Color(0xff000000);
+Color pickerBackgroundColor = const Color(0xffffffff);
 Color currentForegroundColor = pickerForegroundColor;
 Color currentBackgroundColor = pickerBackgroundColor;
 
@@ -35,7 +36,6 @@ String inputString() {
     secondaryInputTextController.text.isNotEmpty,
     tertiaryInputTextController.text.isNotEmpty,
   ];
-  errorMessage = '';
   try {
     return switch (selectedMessageType) {
       // return inputString formated for each messageType
@@ -49,7 +49,7 @@ String inputString() {
           : throw Exception('Required input for LINK not provided.'),
       MessageType.wifi => (providedInputs[0] && providedInputs[1])
           ? 'WIFI:T:${selectedWifiType.toString().substring(9).toUpperCase()};S:${inputTextController.text};P:${secondaryInputTextController.text};;'
-          : errorMessage = 'Required provided Inputs for WIFI not provided.',
+          : throw Exception('Required provided Inputs for WIFI not provided.'),
       MessageType.email => providedInputs[0]
           ? 'mailto:${inputTextController.text}' +
               (providedInputs[1]
@@ -75,7 +75,11 @@ END:VCARD
       _ => throw Exception('Invalid message type.'),
     };
   } catch (e) {
-    errorMessage = e.toString();
+    SnackBarManager.showSnackBar(
+      'Error',
+      '$e',
+      ContentType.failure,
+    );
 
     throw Exception('inputString error');
   }
