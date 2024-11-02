@@ -37,6 +37,7 @@ analysis_options.yaml
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
 **/android/key.properties
+**/android/app/local.properties
 *.jks
 
 #firebase

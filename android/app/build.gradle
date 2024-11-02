@@ -33,12 +33,17 @@ android {
         versionName = flutter.versionName
     }
 
+    def props = new Properties()
+    file('local.properties').withInputStream { stream ->
+      props.load(stream)
+    }
+
     signingConfigs {
         release {
             keyAlias 'my-key'  // Replace with your key alias
-            keyPassword 'IbmobZeXRkPifkru`9102`'  // Replace with your key password
-            storeFile file('/home/luke/my-release-key.jks')  // Path to your .keystore
-            storePassword 'IbmobZeXRkPifkru`9102`'  // Replace with store password
+            keyPassword props['KEY_PASSWORD'] // Replace with your key password
+            storeFile file('/home/luke/Keys/qrCodePlayStore.jks')  // Path to your .keystore
+            storePassword props['KEY_PASSWORD']   // Replace with store password
         }
     }
     buildTypes {
