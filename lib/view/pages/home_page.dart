@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:qr_code_generator/view/widgets/floating_action_buttons.dart';
 import 'package:qr_code_generator/view/widgets/qr_display_actions_card.dart';
 import 'package:qr_code_generator/view/widgets/error_correction_and_colors_card/error_correction_inputs.dart';
 import 'package:qr_code_generator/view/widgets/message_input/message_input_card.dart';
+import 'package:qr_code_generator/model/qr_code_data.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +15,21 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    loadPersistentVariables();
+  }
+
+  Future<void> loadPersistentVariables() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      selectedQrCodeSize =
+          prefs.getString(qrCodePrefName) ?? qrCodeSizeOptions[0];
+    });
+    print('set the state: $selectedQrCodeSize');
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

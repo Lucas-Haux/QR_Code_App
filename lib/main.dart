@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:qr_code_generator/view/pages/home_page.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +41,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// Error messages
 class SnackBarManager {
   static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();

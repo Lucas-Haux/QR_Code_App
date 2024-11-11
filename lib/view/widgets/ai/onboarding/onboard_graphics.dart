@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class Graphics extends StatelessWidget {
   const Graphics({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final rotateTextStyle = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w900,
+      color: Theme.of(context).colorScheme.secondaryFixed,
+    );
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         // Beer Image
@@ -17,6 +24,78 @@ class Graphics extends StatelessWidget {
               'assets/images/aimybeer.png',
               fit: BoxFit.fill,
             ),
+          ),
+        ),
+
+        // Rotating Text
+        SizedBox(
+          height: 60,
+          width: 360,
+          child: AnimatedTextKit(
+            animatedTexts: [
+              RotateAnimatedText(
+                'QR Codes Without Sacrificing Style',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'No Installation, Works On Any Phone',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Artwork In QR Codes Stands Out More',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Seamless Scans with Stunning Design',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'QR Codes as Unique as Your Brand',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Customizable and Eye-Catching QR Codes',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Instant Access Meets Incredible Art',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Beautiful Codes, Effortless Connections',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'On-Brand, On-Style, On Any Device',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+              RotateAnimatedText(
+                'Turn Scans into Engagement with AI Style',
+                duration: const Duration(seconds: 3),
+                textStyle: rotateTextStyle,
+                textAlign: TextAlign.center,
+              ),
+            ],
+            pause: const Duration(milliseconds: 500),
+            repeatForever: true,
           ),
         ),
 

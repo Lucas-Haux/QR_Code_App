@@ -13,12 +13,8 @@ class _ShowcaseCarouselState extends State<ShowcaseCarousel> {
       PageController(initialPage: 10);
 
   @override
-// Start at index 10
-
   Widget build(BuildContext context) {
-    final controller = SharedCarouselController()
-        .carouselController; // Get the shared controller
-
+    final controller = SharedCarouselController().carouselController;
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 200),
       child: ShaderMask(
@@ -37,7 +33,7 @@ class _ShowcaseCarouselState extends State<ShowcaseCarousel> {
         },
         blendMode: BlendMode.dstIn,
         child: PageView.builder(
-          controller: controller, // Use the PageController
+          controller: controller,
           pageSnapping: false,
           dragStartBehavior: DragStartBehavior.start,
           clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -66,7 +62,7 @@ class SharedCarouselController {
       PageController(initialPage: 10, viewportFraction: 1 / 2);
 
   void dispose() {
-    carouselController.dispose(); // Dispose when no longer needed
+    carouselController.dispose();
   }
 }
 
@@ -81,7 +77,7 @@ class UncontainedLayoutCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: ClipRRect(
         borderRadius:
             BorderRadius.circular(35.0), // Adjust the radius as needed

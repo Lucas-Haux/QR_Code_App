@@ -40,9 +40,9 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'my-key'  // Replace with your key alias
+            keyAlias 'qrCodeApp'  // Replace with your key alias
             keyPassword props['KEY_PASSWORD'] // Replace with your key password
-            storeFile file('/home/luke/Keys/qrCodePlayStore.jks')  // Path to your .keystore
+            storeFile file('/home/luke/Keys/qrCodeApp/qrCodeGoolgePlayKey.jks')  // Path to your .keystore
             storePassword props['KEY_PASSWORD']   // Replace with store password
         }
     }

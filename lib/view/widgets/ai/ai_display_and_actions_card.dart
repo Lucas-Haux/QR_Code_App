@@ -21,25 +21,37 @@ class AiDisplayCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ValueListenableBuilder<String>(
-              valueListenable: aiNotifier,
-              builder: (context, aiImage, child) {
-                return aiImage.isNotEmpty
+            ValueListenableBuilder<bool>(
+              valueListenable: isLoadingNotifier,
+              builder: (context, isLoading, child) {
+                return isLoading
                     ? Container(
                         constraints:
-                            const BoxConstraints(maxWidth: 300, maxHeight: 291),
+                            const BoxConstraints(maxWidth: 300, maxHeight: 301),
                         padding: const EdgeInsets.only(bottom: 30),
-                        child: Column(
-                          children: [
-                            Image.network(
-                              aiImage, // Display the QR code
-
-                              scale: 2,
-                            ),
-                          ],
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.secondary,
+                          strokeCap: StrokeCap.round,
                         ),
                       )
-                    : const SizedBox.shrink(); // Show no space if no QR code
+                    : aiImage.isNotEmpty
+                        ? Container(
+                            constraints: const BoxConstraints(
+                                maxWidth: 300, maxHeight: 301),
+                            padding: const EdgeInsets.only(bottom: 30),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 15),
+                                Image.network(
+                                  aiImage, // Display the QR code
+
+                                  scale: 2,
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox
+                            .shrink(); // Show no space if no QR code
               },
             ),
             const AiButton(),
@@ -74,15 +86,17 @@ class _AiButtonState extends State<AiButton> {
         ),
         const SizedBox(width: 10),
         // Save Button
-        ValueListenableBuilder<String>(
-          valueListenable: aiNotifier,
-          builder: (context, aiImage, child) {
-            return aiImage.isNotEmpty
-                ? IconButton.filledTonal(
-                    onPressed: () => saveImage(context, aiImageResponse),
-                    icon: const Icon(Icons.save),
-                  )
-                : const SizedBox.shrink();
+        ValueListenableBuilder<bool>(
+          valueListenable: isLoadingNotifier,
+          builder: (context, isLoading, child) {
+            return isLoading
+                ? const SizedBox.shrink()
+                : aiImage.isNotEmpty
+                    ? IconButton.filledTonal(
+                        onPressed: () => saveImage(context, aiImageResponse),
+                        icon: const Icon(Icons.save),
+                      )
+                    : const SizedBox.shrink();
           },
         ),
       ],

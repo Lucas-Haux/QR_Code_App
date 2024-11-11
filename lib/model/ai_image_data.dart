@@ -7,8 +7,8 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:qr_code_generator/model/ai_json_encode.dart';
 
 String aiImage = '';
-ValueNotifier<String> aiNotifier = ValueNotifier<String>('');
 http.Response aiImageResponse = http.Response('', 200);
+ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
 
 TextEditingController prompt = TextEditingController();
 TextEditingController negativePrompt = TextEditingController();
@@ -21,8 +21,7 @@ double qrScaleValue = 0.9;
 double imageStrengthValue = 0.3;
 
 Future<void> generateAiImage() async {
-  aiNotifier.value =
-      'https://kagi.com/proxy/loading-gif.gif?c=SL-LVC2RnE1nrizWRL3dvwb36tRbmAFYeUeqSXmQ5wMJ8mdxzHdLAHGZaApxAZHAUuBN1GoGuTraS-0ZHD_c6N4pf3GhJ42iVFfihEvou5o%3D'; // loading gif needs to be change
+  isLoadingNotifier.value = true;
   final url = Uri.parse(
       "https://us-central1-qr-code-generator-a667f.cloudfunctions.net/generateQRCodeImage");
 
@@ -50,8 +49,6 @@ Future<void> generateAiImage() async {
 
     String errorMessage = innerJson['detail']['error'];
 
-    print(errorMessage); // This will print: "No QR code found in image"
-
     if (errorMessage == 'No QR code found in image') {
       SnackBarManager.showSnackBar(
         'Error',
@@ -65,6 +62,12 @@ Future<void> generateAiImage() async {
         'To Generate AI QR Code you must provide a text prompt or an image prompt',
         ContentType.failure,
       );
+    } else if (errorMessage.contains('<p>')) {
+      SnackBarManager.showSnackBar(
+        'Crtical Error!!!!',
+        'Sorry, a major problem on our end. Cant generate AI QR Codes right now.',
+        ContentType.failure,
+      );
     } else {
       SnackBarManager.showSnackBar(
         'Error',
@@ -73,6 +76,6 @@ Future<void> generateAiImage() async {
       );
     }
   }
-  aiNotifier.value = aiImage;
+  isLoadingNotifier.value = false;
   aiImageResponse = await http.get(Uri.parse(aiImage));
 }

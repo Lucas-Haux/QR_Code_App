@@ -4,6 +4,10 @@ import 'package:qr_code_generator/model/inputs_data.dart';
 import 'package:qr_code_generator/main.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
+String qrCodePrefName = 'Qr Code Size';
+List<String> qrCodeSizeOptions = ['200x200', '400x400', '800x800', '999x999'];
+String selectedQrCodeSize = '200x200';
+
 String qrCodeImage = '';
 ValueNotifier<String> qrCodeImageNotifier = ValueNotifier<String>('');
 
@@ -24,7 +28,7 @@ String constructQRCodeUrl() {
         currentBackgroundColor.toString().length - 1, // remove last character
       );
 
-  return 'https://image-charts.com/chart?chl=${inputString().toString()}&choe=UTF-8&chs=200x200&cht=qr&chld=$errorString|0&icqrf=$foregroundColor&icqrb=$backgroundColor';
+  return 'https://image-charts.com/chart?chl=${inputString().toString()}&choe=UTF-8&chs=$selectedQrCodeSize&cht=qr&chld=$errorString|0&icqrf=$foregroundColor&icqrb=$backgroundColor';
 }
 
 Future<void> fetchQRCode(BuildContext context) async {
@@ -33,6 +37,7 @@ Future<void> fetchQRCode(BuildContext context) async {
   usedErrorCorrectionLevel = selectedErrorCorrectionLevel;
 
   String activeUrl = constructQRCodeUrl();
+  print(activeUrl);
 
   // Make Api called
   try {

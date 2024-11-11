@@ -17,6 +17,7 @@ class SettingsAndAIButtons extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(18),
           child: FloatingActionButton.small(
+            key: const Key('settingsButton'),
             // Navigate to settings page
             onPressed: () {
               Navigator.push(
@@ -38,6 +39,7 @@ class SettingsAndAIButtons extends StatelessWidget {
                 ? Container(
                     padding: const EdgeInsets.all(18),
                     child: FloatingActionButton.small(
+                      key: const Key('aiButton'),
                       onPressed: () {
                         // Navigate to AI page
                         Navigator.push(

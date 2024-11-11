@@ -19,7 +19,7 @@ ValueNotifier<MessageType> messageTypeNotifier =
     ValueNotifier<MessageType>(MessageType.text);
 LinkType selectedLinkType = LinkType.https;
 WifiType selectedWifiType = WifiType.wpa;
-ErrorCorrectionLevel selectedErrorCorrectionLevel = ErrorCorrectionLevel.L;
+ErrorCorrectionLevel selectedErrorCorrectionLevel = ErrorCorrectionLevel.H;
 
 Color pickerForegroundColor = const Color(0xff000000);
 Color pickerBackgroundColor = const Color(0xffffffff);
