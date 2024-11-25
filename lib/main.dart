@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:dynamic_color/dynamic_color.dart';
@@ -15,22 +16,55 @@ Future main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static final _defaultLightColorScheme =
-      ColorScheme.fromSwatch(primarySwatch: Colors.blue);
+  static MaterialColor createMaterialColor(Color color) {
+    Map<int, Color> colorShades = {
+      50: Color.fromRGBO(color.red, color.green, color.blue, .1),
+      100: Color.fromRGBO(color.red, color.green, color.blue, .2),
+      200: Color.fromRGBO(color.red, color.green, color.blue, .3),
+      300: Color.fromRGBO(color.red, color.green, color.blue, .4),
+      400: Color.fromRGBO(color.red, color.green, color.blue, .5),
+      500: Color.fromRGBO(color.red, color.green, color.blue, .6),
+      600: Color.fromRGBO(color.red, color.green, color.blue, .7),
+      700: Color.fromRGBO(color.red, color.green, color.blue, .8),
+      800: Color.fromRGBO(color.red, color.green, color.blue, .9),
+      900: color,
+    };
+    return MaterialColor(color.value, colorShades);
+  }
 
-  static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
-      primarySwatch: Colors.blue, brightness: Brightness.dark);
+  static final _defaultLightColorScheme = ColorScheme.fromSwatch(
+      primarySwatch: createMaterialColor(const Color(0xFF99CBFF)),
+      accentColor: createMaterialColor(const Color(0xFFB9C6EA)),
+      cardColor: createMaterialColor(const Color(0xFF151C24)),
+      backgroundColor: createMaterialColor(const Color(0xFF0D1B37)),
+      brightness: Brightness.light
+
+      // cardColor: and more
+      );
+
+  static final _defaultDarkColorScheme = ColorScheme.fromSeed(
+      seedColor: Color(0xFF99CBFF),
+      brightness: Brightness.dark,
+      contrastLevel: 0);
 
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
       return MaterialApp(
         theme: ThemeData(
-          colorScheme: lightColorScheme ?? _defaultLightColorScheme,
+          colorScheme: lightColorScheme ??
+              ColorScheme.fromSeed(
+                  seedColor: Color(0xFF99CBFF),
+                  brightness: Brightness.light,
+                  contrastLevel: 0),
           useMaterial3: true,
         ),
         darkTheme: ThemeData(
-          colorScheme: darkColorScheme ?? _defaultDarkColorScheme,
+          colorScheme: darkColorScheme ??
+              ColorScheme.fromSeed(
+                  seedColor: Color(0xFF99CBFF),
+                  brightness: Brightness.dark,
+                  contrastLevel: 0),
           useMaterial3: true,
         ),
         scaffoldMessengerKey: SnackBarManager.scaffoldMessengerKey,

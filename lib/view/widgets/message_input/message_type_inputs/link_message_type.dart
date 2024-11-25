@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_generator/model/inputs_data.dart';
 import 'package:qr_code_generator/view/widgets/message_input/message_type_inputs/link_message_type_button.dart';
 
-class linkMessageInput extends StatelessWidget {
-  const linkMessageInput({super.key});
+class LinkMessageInput extends StatelessWidget {
+  const LinkMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class linkMessageInput extends StatelessWidget {
                     ),
                     prefixText: selectedLinkType == LinkType.raw
                         ? ''
-                        : selectedLinkType.toString().substring(9) + '://',
+                        : '${selectedLinkType.toString().substring(9)}://',
                     floatingLabelAlignment: FloatingLabelAlignment.center,
                   ),
                   controller: inputTextController,

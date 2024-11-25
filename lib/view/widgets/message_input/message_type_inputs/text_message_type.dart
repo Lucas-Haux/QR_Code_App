@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/model/inputs_data.dart';
 
-class textMessageInput extends StatelessWidget {
-  const textMessageInput({super.key});
+class TextMessageInput extends StatelessWidget {
+  const TextMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {

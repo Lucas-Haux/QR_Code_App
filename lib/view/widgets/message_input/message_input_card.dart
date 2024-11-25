@@ -21,24 +21,37 @@ class MessageInputCard extends StatelessWidget {
       ),
       child: Container(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            MessageSelectorButton(messageTypeNotifier: messageTypeNotifier),
-            const SizedBox(height: 16),
-            ValueListenableBuilder<MessageType>(
-              valueListenable: messageTypeNotifier,
-              builder: (context, qrCodeImage, child) {
-                return switch (selectedMessageType) {
-                  MessageType.text => const textMessageInput(),
-                  MessageType.link => const linkMessageInput(),
-                  MessageType.wifi => const wifiMessageInput(),
-                  MessageType.email => const emailMessageInput(),
-                  MessageType.contacts => const contactsMessageInput(),
-                };
-              },
-            ),
-          ],
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              MessageSelectorButton(messageTypeNotifier: messageTypeNotifier),
+              const SizedBox(height: 16),
+              ValueListenableBuilder<MessageType>(
+                valueListenable: messageTypeNotifier,
+                builder: (context, qrCodeImage, child) {
+                  return AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    child: switch (selectedMessageType) {
+                      MessageType.text => const TextMessageInput(),
+                      MessageType.link => const LinkMessageInput(),
+                      MessageType.wifi => const WifiMessageInput(),
+                      MessageType.email => const EmailMessageInput(),
+                      MessageType.contacts => const ContactsMessageInput(),
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -58,7 +71,6 @@ class _MessageSelectorButtonState extends State<MessageSelectorButton> {
     setState(() {
       selectedMessageType = newType;
     });
-    print('messagetype update $selectedMessageType');
   }
 
   @override

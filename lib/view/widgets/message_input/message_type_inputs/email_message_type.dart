@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/model/inputs_data.dart';
 
-class emailMessageInput extends StatelessWidget {
-  const emailMessageInput({super.key});
+class EmailMessageInput extends StatelessWidget {
+  const EmailMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {

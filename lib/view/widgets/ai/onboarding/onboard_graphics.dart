@@ -118,7 +118,17 @@ class Graphics extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primaryFixed,
+                      foreground: Paint()
+                        ..shader = LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(
+                          const Rect.fromLTWH(0, 0, 200, 30),
+                        ),
                       height: 1,
                     ),
                   ),
@@ -154,7 +164,17 @@ class Graphics extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primaryFixed,
+                      foreground: Paint()
+                        ..shader = LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(
+                          const Rect.fromLTWH(0, 0, 200, 30),
+                        ),
                       height: 1,
                     ),
                   ),
@@ -190,7 +210,17 @@ class Graphics extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primaryFixed,
+                      foreground: Paint()
+                        ..shader = LinearGradient(
+                          colors: [
+                            Theme.of(context).colorScheme.primary,
+                            Theme.of(context).colorScheme.secondary,
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(
+                          const Rect.fromLTWH(0, 0, 200, 30),
+                        ),
                       height: 1,
                     ),
                   ),

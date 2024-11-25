@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/model/inputs_data.dart';
 
-class contactsMessageInput extends StatelessWidget {
-  const contactsMessageInput({super.key});
+class ContactsMessageInput extends StatelessWidget {
+  const ContactsMessageInput({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +25,8 @@ class contactsMessageInput extends StatelessWidget {
                 floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
               controller: inputTextController,
-              validator: (_value) {
-                return _value.toString().isEmpty
+              validator: (value) {
+                return value.toString().isEmpty
                     ? 'Name Can Not Be Empty'
                     : null;
               },
@@ -82,8 +82,8 @@ class contactsMessageInput extends StatelessWidget {
                 floatingLabelAlignment: FloatingLabelAlignment.center,
               ),
               controller: tertiaryInputTextController,
-              validator: (_value) {
-                return _value.toString().isEmpty
+              validator: (value) {
+                return value.toString().isEmpty
                     ? 'Address Can Not Be Empty'
                     : null;
               },

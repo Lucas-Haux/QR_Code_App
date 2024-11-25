@@ -12,16 +12,21 @@ class AIPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('AI QR Code Generator'),
       ),
-      body: const SingleChildScrollView(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AiPrompts(),
-              AiSettings(),
-              AiDisplayCard(),
-            ],
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus(); // Unfocus when tapping outside
+        },
+        child: const SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AiPrompts(),
+                AiSettings(),
+                AiDisplayCard(),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:dynamic_color/dynamic_color.dart';
 
 import 'package:flutter/material.dart';
 import 'package:qr_code_generator/main.dart';
@@ -166,8 +167,10 @@ class _PaymentAppState extends State<PaymentApp> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.5),
       appBar: AppBar(
         title: const Text('IAP Example'),
+        backgroundColor: Colors.transparent,
       ),
       body: Stack(
         children: stack,
@@ -200,7 +203,7 @@ class _PaymentAppState extends State<PaymentApp> {
         ),
       ]);
     }
-    return Card(child: Column(children: children));
+    return Card(color: Colors.transparent, child: Column(children: children));
   }
 
   Card _buildProductList() {
@@ -214,7 +217,6 @@ class _PaymentAppState extends State<PaymentApp> {
       return const Card();
     }
 
-    const ListTile productHeader = ListTile(title: Text('Products for Sale'));
     final List<Widget> productCards = <Widget>[];
 
     if (_notFoundIds.isNotEmpty) {
@@ -291,15 +293,6 @@ class _PaymentAppState extends State<PaymentApp> {
                         purchaseParam =
                             PurchaseParam(productDetails: productDetails);
                       }
-
-                      if (productDetails.id == _kConsumableId) {
-                        _inAppPurchase.buyConsumable(
-                            purchaseParam: purchaseParam,
-                            autoConsume: _kAutoConsume);
-                      } else {
-                        _inAppPurchase.buyNonConsumable(
-                            purchaseParam: purchaseParam);
-                      }
                     },
                     child: Text(productDetails.price),
                   ),
@@ -310,10 +303,10 @@ class _PaymentAppState extends State<PaymentApp> {
     ));
 
     return Card(
+      color: Colors.transparent,
+      shadowColor: Colors.transparent,
       child: Column(
         children: [
-          productHeader,
-          const Divider(),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -351,16 +344,17 @@ class _PaymentAppState extends State<PaymentApp> {
       );
     }).toList();
     return Card(
+        color: Colors.transparent,
         child: Column(children: <Widget>[
-      consumableHeader,
-      const Divider(),
-      GridView.count(
-        crossAxisCount: 5,
-        shrinkWrap: true,
-        padding: const EdgeInsets.all(16.0),
-        children: tokens,
-      )
-    ]));
+          consumableHeader,
+          const Divider(),
+          GridView.count(
+            crossAxisCount: 5,
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(16.0),
+            children: tokens,
+          )
+        ]));
   }
 
   Widget _buildRestoreButton() {
@@ -373,10 +367,14 @@ class _PaymentAppState extends State<PaymentApp> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Colors.white,
+          OutlinedButton(
+            style: ButtonStyle(
+              side: WidgetStatePropertyAll(
+                BorderSide(
+                  color: Theme.of(context).colorScheme.outline,
+                  width: 2.0,
+                ),
+              ),
             ),
             onPressed: () => _inAppPurchase.restorePurchases(),
             child: const Text('Restore purchases'),
@@ -426,6 +424,9 @@ class _PaymentAppState extends State<PaymentApp> {
   Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
     // IMPORTANT!! Always verify a purchase before delivering the product.
     // For the purpose of an example, we directly return true.
+    int coins = 50;
+    print(coins);
+    print('purchaseDetails: $purchaseDetails');
     return Future<bool>.value(true);
   }
 

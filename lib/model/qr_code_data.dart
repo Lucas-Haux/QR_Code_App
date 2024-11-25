@@ -4,6 +4,8 @@ import 'package:qr_code_generator/model/inputs_data.dart';
 import 'package:qr_code_generator/main.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 
+bool qrCodeLoading = false;
+
 String qrCodePrefName = 'Qr Code Size';
 List<String> qrCodeSizeOptions = ['200x200', '400x400', '800x800', '999x999'];
 String selectedQrCodeSize = '200x200';
@@ -19,19 +21,20 @@ ErrorCorrectionLevel usedErrorCorrectionLevel = selectedErrorCorrectionLevel;
 
 String constructQRCodeUrl() {
   String errorString = selectedErrorCorrectionLevel.toString().substring(21);
-  String foregroundColor = currentForegroundColor.toString().substring(
-        10, // remove first 10 characters
-        currentForegroundColor.toString().length - 1, // remove last character
-      );
-  String backgroundColor = currentBackgroundColor.toString().substring(
-        10, // remove first 10 characters
-        currentBackgroundColor.toString().length - 1, // remove last character
-      );
+
+  String foregroundColor =
+      '#${currentForegroundColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}'
+          .substring(3);
+
+  String backgroundColor =
+      '#${currentBackgroundColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}'
+          .substring(3);
 
   return 'https://image-charts.com/chart?chl=${inputString().toString()}&choe=UTF-8&chs=$selectedQrCodeSize&cht=qr&chld=$errorString|0&icqrf=$foregroundColor&icqrb=$backgroundColor';
 }
 
 Future<void> fetchQRCode(BuildContext context) async {
+  qrCodeLoading = true;
   usedForgroundColor = currentForegroundColor;
   usedBackgroundColor = currentBackgroundColor;
   usedErrorCorrectionLevel = selectedErrorCorrectionLevel;
