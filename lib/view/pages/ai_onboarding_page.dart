@@ -121,15 +121,15 @@ class _AiOnbordingPageState extends State<AiOnbordingPage> {
           ),
           // Beer Graphic and info
           const SliverToBoxAdapter(child: Center(child: Graphics())),
-          const SliverToBoxAdapter(child: ProductCards()),
+          const SliverToBoxAdapter(child: RowProductCards()),
         ],
       ),
     );
   }
 }
 
-class ProductCards extends StatelessWidget {
-  const ProductCards({super.key});
+class RowProductCards extends StatelessWidget {
+  const RowProductCards({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -143,38 +143,34 @@ class ProductCards extends StatelessWidget {
         SizedBox(height: 5),
         Row(
           children: [
-            ProductCard(
-                primary: false,
+            //Left
+            SubProductCard(
                 title: '90 Tokens',
                 tokens: '90 Tokens',
                 price: '\$3.50, One Time'),
-            ProductCard(
-                primary: true,
-                title: '2 Months',
-                tokens: '500 Tokens!',
-                price: '\$6.00 A Month!'),
-            ProductCard(
-                primary: false,
+            //Middle
+            MainProductCard(),
+            //Right
+            SubProductCard(
                 title: '1 Month',
                 tokens: '280 Tokens!',
                 price: '\$10.00 A Month')
           ],
         ),
+        SizedBox(height: 20),
       ],
     );
   }
 }
 
-class ProductCard extends StatelessWidget {
+class SubProductCard extends StatelessWidget {
   final String title;
   final String tokens;
   final String price;
-  final bool primary;
-  const ProductCard({
+  const SubProductCard({
     required this.title,
     required this.tokens,
     required this.price,
-    required this.primary,
     super.key,
   });
 
@@ -183,37 +179,39 @@ class ProductCard extends StatelessWidget {
     double aiUses = int.parse(tokens.substring(0, 3)) / 5;
     return Expanded(
       child: Card(
-        margin: EdgeInsets.only(
-            left: 5, right: 5, bottom: primary ? 0 : 40, top: primary ? 0 : 13),
+        margin: const EdgeInsets.only(left: 5, right: 5, bottom: 0, top: 0),
         color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
         child: Column(children: [
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
+
+          // Title
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: primary
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.white,
+              color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
+
+          // Body
           const SizedBox(height: 10),
+          // Tokens and Price
           Text(
             '• $tokens\n• $price',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
-              fontWeight: primary ? FontWeight.bold : FontWeight.normal,
+              fontWeight: FontWeight.normal,
             ),
           ),
-          if (aiUses == 18) ...[
-            const SizedBox(height: 10),
-            Text('• Only ${aiUses.toInt()} AI Uses'),
-            const SizedBox(height: 15),
-          ] else if (aiUses < 90)
-            const SizedBox(height: 45),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
+
+          // Total AI Uses
+          Text('• Only ${aiUses.toInt()} AI Uses'),
+          const SizedBox(height: 15),
+
+          // Start Button
           FilledButton(
             onPressed: () {
               Navigator.push(
@@ -226,7 +224,64 @@ class ProductCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
-          const SizedBox(height: 20)
+          const SizedBox(height: 10)
+        ]),
+      ),
+    );
+  }
+}
+
+// trash code, if primary made primary bigger
+class MainProductCard extends StatelessWidget {
+  const MainProductCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        margin: const EdgeInsets.only(left: 5, right: 5, bottom: 20, top: 0),
+        color: Theme.of(context).colorScheme.onSecondaryFixedVariant,
+        child: Column(children: [
+          const SizedBox(height: 5),
+
+          // Title
+          const Text(
+            '2 Months',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          // Body
+          const SizedBox(height: 10),
+          // Tokens and Price
+          const Text(
+            '• 500 Tokens\n• \$6 per month\n \n • Only 100 AI Uses',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+
+          const SizedBox(height: 15),
+
+          // Start Button
+          FilledButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PaymentApp()),
+              );
+            },
+            child: const Text(
+              'Start',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(height: 10)
         ]),
       ),
     );
