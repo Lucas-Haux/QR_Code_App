@@ -16,37 +16,6 @@ Future main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static MaterialColor createMaterialColor(Color color) {
-    Map<int, Color> colorShades = {
-      50: Color.fromRGBO(color.red, color.green, color.blue, .1),
-      100: Color.fromRGBO(color.red, color.green, color.blue, .2),
-      200: Color.fromRGBO(color.red, color.green, color.blue, .3),
-      300: Color.fromRGBO(color.red, color.green, color.blue, .4),
-      400: Color.fromRGBO(color.red, color.green, color.blue, .5),
-      500: Color.fromRGBO(color.red, color.green, color.blue, .6),
-      600: Color.fromRGBO(color.red, color.green, color.blue, .7),
-      700: Color.fromRGBO(color.red, color.green, color.blue, .8),
-      800: Color.fromRGBO(color.red, color.green, color.blue, .9),
-      900: color,
-    };
-    return MaterialColor(color.value, colorShades);
-  }
-
-  static final _defaultLightColorScheme = ColorScheme.fromSwatch(
-      primarySwatch: createMaterialColor(const Color(0xFF99CBFF)),
-      accentColor: createMaterialColor(const Color(0xFFB9C6EA)),
-      cardColor: createMaterialColor(const Color(0xFF151C24)),
-      backgroundColor: createMaterialColor(const Color(0xFF0D1B37)),
-      brightness: Brightness.light
-
-      // cardColor: and more
-      );
-
-  static final _defaultDarkColorScheme = ColorScheme.fromSeed(
-      seedColor: Color(0xFF99CBFF),
-      brightness: Brightness.dark,
-      contrastLevel: 0);
-
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(builder: (lightColorScheme, darkColorScheme) {
@@ -54,18 +23,34 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: lightColorScheme ??
               ColorScheme.fromSeed(
-                  seedColor: Color(0xFF99CBFF),
+                  seedColor: const Color(0xFF99CBFF),
                   brightness: Brightness.light,
                   contrastLevel: 0),
           useMaterial3: true,
+          cardTheme: CardTheme(
+            color: lightColorScheme?.onSecondaryFixedVariant,
+            elevation: 2,
+            margin: const EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
         darkTheme: ThemeData(
           colorScheme: darkColorScheme ??
               ColorScheme.fromSeed(
-                  seedColor: Color(0xFF99CBFF),
+                  seedColor: const Color(0xFF99CBFF),
                   brightness: Brightness.dark,
                   contrastLevel: 0),
           useMaterial3: true,
+          cardTheme: CardTheme(
+            color: darkColorScheme?.onSecondaryFixedVariant,
+            elevation: 2,
+            margin: const EdgeInsets.all(10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
         scaffoldMessengerKey: SnackBarManager.scaffoldMessengerKey,
         home: const HomePage(),
@@ -89,7 +74,7 @@ class SnackBarManager {
         contentType: contentType,
       ),
       backgroundColor: Colors.transparent,
-      elevation: 0,
+      elevation: 6,
       duration: contentType == ContentType.success
           ? const Duration(seconds: 3)
           : const Duration(seconds: 12),

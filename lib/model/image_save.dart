@@ -1,14 +1,13 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:qr_code_generator/main.dart';
 
-Future<void> saveImage(BuildContext context, response) async {
+Future<void> saveImage(response) async {
   try {
     // Get temporary directory
     final dir = await getTemporaryDirectory();

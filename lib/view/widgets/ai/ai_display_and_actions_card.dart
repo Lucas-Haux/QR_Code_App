@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_generator/model/ai_image_data.dart';
-import 'package:qr_code_generator/model/image_save.dart';
 
 class AiDisplayCard extends StatelessWidget {
   const AiDisplayCard({super.key});
@@ -93,7 +92,7 @@ class _AiButtonState extends State<AiButton> {
                 ? const SizedBox.shrink()
                 : aiImage.isNotEmpty
                     ? IconButton.filledTonal(
-                        onPressed: () => saveImage(context, aiImageResponse),
+                        onPressed: () => print('save image needs viewmodle'),
                         icon: const Icon(Icons.save),
                       )
                     : const SizedBox.shrink();

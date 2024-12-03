@@ -10,16 +10,6 @@ String aiImage = '';
 http.Response aiImageResponse = http.Response('', 200);
 ValueNotifier<bool> isLoadingNotifier = ValueNotifier<bool>(false);
 
-TextEditingController prompt = TextEditingController();
-TextEditingController negativePrompt = TextEditingController();
-String imagePrompt = "";
-
-double brightnessValue = 0.3;
-double tilingValue = 0.3;
-double guidanceValue = 9;
-double qrScaleValue = 0.9;
-double imageStrengthValue = 0.3;
-
 Future<void> generateAiImage() async {
   isLoadingNotifier.value = true;
   final url = Uri.parse(
