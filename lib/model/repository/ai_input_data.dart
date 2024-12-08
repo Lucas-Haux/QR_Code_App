@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-TextEditingController prompt = TextEditingController();
-TextEditingController negativePrompt = TextEditingController();
 String imagePrompt = "";
 
 double brightnessValue = 0.3;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_generator/view/widgets/payments.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:qr_code_generator/model/qr_code_data.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -22,12 +21,12 @@ class SettingsPage extends StatelessWidget {
             Text('ai quality slider'),
             Text('support us by leaving a review'),
             PaymentButton(),
-            PersistentMenuSelector(
-              prefsName: qrCodePrefName,
-              options: qrCodeSizeOptions,
-              selectedOption: selectedQrCodeSize,
-              onChanged: (String newValue) => selectedQrCodeSize = newValue,
-            ),
+//            PersistentMenuSelector(
+            //prefsName: qrCodePrefName,
+            //options: qrCodeSizeOptions,
+            //selectedOption: selectedQrCodeSize,
+            //onChanged: (String newValue) => selectedQrCodeSize = newValue,
+            //),
           ],
         ),
       ),

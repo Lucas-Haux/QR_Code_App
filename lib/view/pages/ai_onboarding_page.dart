@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:qr_code_generator/main.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:qr_code_generator/model/inputs_data.dart';
 import 'package:qr_code_generator/view/components/onboarding_carousel_component.dart';
 
 import 'package:qr_code_generator/view/components/onboarding_beer_image_rotating_text_component.dart';
 import 'package:qr_code_generator/view/components/onboarding_graphics_component.dart';
-import 'package:qr_code_generator/model/qr_code_data.dart';
 import 'package:qr_code_generator/view/components/onboarding_payment_cards_component.dart';
 import 'package:qr_code_generator/view/pages/ai_page.dart';
 import 'package:qr_code_generator/viewModel/onboarding_viewmodel.dart';
@@ -74,31 +72,6 @@ class _AiOnbordingPageState extends State<AiOnbordingPage> {
                   child: Text('take me to ai')))
         ],
       ),
-    );
-  }
-}
-
-void _aiPageWarnings() {
-  if (usedErrorCorrectionLevel != ErrorCorrectionLevel.H) {
-    SnackBarManager.showSnackBar(
-      'AI Generator Warning',
-      'Error Correction Level isnt set to High. This could make the QR Code harder to scan.',
-      ContentType.warning,
-    );
-  }
-
-  if (usedForgroundColor.value != 4278190080) {
-    SnackBarManager.showSnackBar(
-      'AI Generator Warning',
-      'Forground color isnt Black. This could result in failures. Current color = #${usedForgroundColor.value.toRadixString(16).toString().substring(2).toUpperCase()}',
-      ContentType.warning,
-    );
-  }
-  if (usedBackgroundColor.value != 4294967295) {
-    SnackBarManager.showSnackBar(
-      'AI Generator Warning',
-      'Background color isnt white. This could result in failures. Current color = #${usedBackgroundColor.value.toRadixString(16).toString().substring(2).toUpperCase()}',
-      ContentType.warning,
     );
   }
 }

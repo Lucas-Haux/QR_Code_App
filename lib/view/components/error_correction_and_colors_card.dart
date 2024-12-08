@@ -103,7 +103,8 @@ class _ErrorCorrectionComponent extends StatelessWidget {
         ValueListenableBuilder<ErrorCorrectionLevel>(
           valueListenable: errorCorrectionLevelNotifier,
           builder: (context, selectedErrorCorrectionLevel, child) {
-            return SegmentedButton<ErrorCorrectionLevel>(
+            return
+                 SegmentedButton<ErrorCorrectionLevel>(
               showSelectedIcon: false,
               emptySelectionAllowed: false,
               segments: const [

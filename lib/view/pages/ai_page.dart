@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:path/path.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:qr_code_generator/view/widgets/ai/ai_inputs/ai_settings.dart';
 
 import 'package:qr_code_generator/view/widgets/image_display_widget.dart';
 import 'package:qr_code_generator/view/widgets/create_and_save_widget.dart';
@@ -41,6 +39,7 @@ class AIPage extends StatelessWidget {
                   setReferenceImage:
                       AiBuilderViewmodel().setReferenceImageStrengthValue,
                 ),
+                const _AiSettingsCard(),
 
                 // display and create/save buttons
                 _AiQrcodeImageDisplayAndButtonsCard(
@@ -80,7 +79,10 @@ class _AiQrcodeImageDisplayAndButtonsCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ImageDisplay(qrcodeImageUrlNotifier: qrcodeImageUrlNotifier),
+              ImageDisplay(
+                qrcodeImageUrlNotifier: qrcodeImageUrlNotifier,
+                loadingNotifier: aiLoadingNotifier,
+              ),
               CreateAndSaveButtons(
                 qrcodeImageUrlNotifier: qrcodeImageUrlNotifier,
                 saveImageFunction: saveImageFunction,
@@ -97,15 +99,15 @@ class _AiQrcodeImageDisplayAndButtonsCard extends StatelessWidget {
 class _AiPromptCard extends StatelessWidget {
   final TextEditingController textPromptController;
   final TextEditingController negativeTextPromptController;
-  final ValueNotifier<File?> referenceImageNotifier;
-  final double referenceImageStrengthValue;
+  final ValueNotifier<String> referenceImageNotifier;
+  final ValueNotifier<double> referenceImageStrengthValue;
   final ValueChanged<double> setReferenceImage;
 
   const _AiPromptCard({
+    required this.referenceImageStrengthValue,
     required this.textPromptController,
     required this.negativeTextPromptController,
     required this.referenceImageNotifier,
-    required this.referenceImageStrengthValue,
     required this.setReferenceImage,
   });
 
@@ -113,7 +115,8 @@ class _AiPromptCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 340, minWidth: 340),
+        constraints:
+            const BoxConstraints(maxWidth: 340, minWidth: 340, maxHeight: 350),
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +134,8 @@ class _AiPromptCard extends StatelessWidget {
               textController: negativeTextPromptController,
               opitional: true,
             ),
-            ValueListenableBuilder<File?>(
+            const SizedBox(height: 10),
+            ValueListenableBuilder<String>(
               valueListenable: referenceImageNotifier,
               builder: (context, image, child) {
                 return Column(
@@ -146,41 +150,41 @@ class _AiPromptCard extends StatelessWidget {
                             child: OutlinedButton.icon(
                               onPressed: () {
                                 // pick image
+                                AiBuilderViewmodel().pickImage();
                               },
                               icon: const Icon(Icons.image_search),
                               label: AutoSizeText(
-                                image == null
+                                image.isEmpty
                                     ? 'Refence Image'
-                                    : basename(image.path),
+                                    : basename(image),
                                 textAlign: TextAlign.center,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ), // todo fix when image change
                             ),
                           ),
-                          if (image != null)
+                          if (image.isNotEmpty)
                             IconButton(
                               onPressed: () {
                                 // remove reference image
-                                referenceImageNotifier.value = null;
+                                referenceImageNotifier.value = "";
                               },
                               icon: const Icon(Icons.close),
                             ),
                         ],
                       ),
                     ),
-                    if (image != null)
+                    if (image.isNotEmpty)
                       Column(
                         children: [
                           const SizedBox(height: 5),
                           const Text('Image Prompt Strength'),
                           // defined in ai_settings.dart
-                          AISlider(
-                            value: referenceImageStrengthValue,
+                          AiSlider(
                             onChanged: setReferenceImage,
-                            min: 0,
                             max: 1,
-                          ),
+                            valueNotifier: referenceImageStrengthValue,
+                          )
                         ],
                       )
                   ],
@@ -195,16 +199,48 @@ class _AiPromptCard extends StatelessWidget {
 }
 
 class _AiSettingsCard extends StatelessWidget {
-  const _AiSettingsCard({super.key});
+  const _AiSettingsCard();
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: 340, minWidth: 340),
+        padding: const EdgeInsets.all(20),
         child: Column(
-      children: [
-        _LabelRow(label: 'Data Clarity', dialog: tilingDialog),
-      ],
-    ));
+          children: [
+            const _LabelRow(label: 'Data Clarity', dialog: tilingDialog),
+            AiSlider(
+              valueNotifier: currentTilingValue,
+              onChanged: AiBuilderViewmodel().setTilingValue,
+              max: 1,
+            ),
+            const SizedBox(height: 10),
+            const _LabelRow(label: 'Brightness', dialog: brightnessDialog),
+            AiSlider(
+              valueNotifier: currentBrightnessValue,
+              onChanged: AiBuilderViewmodel().setBrightnessValue,
+              max: 1,
+            ),
+            const SizedBox(height: 10),
+            const _LabelRow(label: 'AI Creativity', dialog: creativityDialog),
+            AiSlider(
+              valueNotifier: currentGuidanceValue,
+              onChanged: AiBuilderViewmodel().setGuidanceValue,
+              max: 20,
+            ),
+            const SizedBox(height: 10),
+            const Text('QR Code Scale'),
+            AiSlider(
+              valueNotifier: currentQrScaleValue,
+              onChanged: AiBuilderViewmodel().setQrScaleValue,
+              max: 1,
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 }
 

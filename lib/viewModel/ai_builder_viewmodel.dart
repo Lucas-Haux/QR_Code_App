@@ -2,23 +2,28 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:path/path.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:qr_code_generator/viewModel/logic/save_image_logic.dart';
 import 'package:qr_code_generator/model/repository/ai_data_repository.dart';
 import 'package:qr_code_generator/model/repository/ai_input_data.dart';
 import 'package:qr_code_generator/model/repository/qrcode_data_repository.dart';
 
 ValueNotifier<String> aiImageUrlNotifier = ValueNotifier<String>('');
+ValueNotifier<bool> aiLoadingNotifier = ValueNotifier<bool>(false);
 
 TextEditingController textPromptController = TextEditingController();
 TextEditingController negativeTextPromptController = TextEditingController();
 
-ValueNotifier<File?> referenceImageNotifier = ValueNotifier<File?>(null);
-double currentReferenceImageStrengthValue = referenceImageStrengthValue;
-double currentBrightnessValue = brightnessValue;
-double currentTilingValue = tilingValue;
-double currentQrScaleValue = qrScaleValue;
-double currentGuidanceValue = guidanceValue;
+ValueNotifier<String> referenceImageNotifier = ValueNotifier<String>("");
+ValueNotifier<double> currentReferenceImageStrengthValue =
+    ValueNotifier(referenceImageStrengthValue);
+ValueNotifier<double> currentBrightnessValue = ValueNotifier(brightnessValue);
+ValueNotifier<double> currentTilingValue = ValueNotifier(tilingValue);
+ValueNotifier<double> currentQrScaleValue = ValueNotifier(qrScaleValue);
+ValueNotifier<double> currentGuidanceValue = ValueNotifier(guidanceValue);
 
 class AiBuilderViewmodel {
   final subscription = aiUrlController.stream.listen((data) {
@@ -33,10 +38,14 @@ class AiBuilderViewmodel {
   Future<void> updateAiUrl() async {
     try {
       String aiParameters = _constructAiParameters();
-      print('got aiParameters');
-
+      print(aiParameters);
+      aiImageUrlNotifier.value = "";
+      aiLoadingNotifier.value = true;
       await AiDataRepository().updateAi(aiParameters);
+      aiLoadingNotifier.value = false;
     } catch (e) {
+      aiLoadingNotifier.value = false;
+
       print('failed to update ai url: $e');
       throw 'failed to update ai url: $e';
     }
@@ -49,22 +58,51 @@ class AiBuilderViewmodel {
 
   void setBrightnessValue(double value) {
     brightnessValue = value;
-    currentBrightnessValue = value;
+    currentBrightnessValue.value = value;
   }
 
   void setTilingValue(double value) {
     tilingValue = value;
-    currentTilingValue = value;
+    currentTilingValue.value = value;
   }
 
   void setQrScaleValue(double value) {
     qrScaleValue = value;
-    currentQrScaleValue = value;
+    currentQrScaleValue.value = value;
   }
 
   void setGuidanceValue(double value) {
     guidanceValue = value;
-    currentGuidanceValue = value;
+    currentGuidanceValue.value = value;
+  }
+
+  Future<void> pickImage() async {
+    try {
+      final chosenImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (chosenImage == null) return;
+      File image = File(chosenImage.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: image.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100, // Optional: set compression quality if needed
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image To Fit QR Code',
+            toolbarColor: Colors.blue, // change to color scheme
+            toolbarWidgetColor: Colors.white,
+            hideBottomControls: true,
+          ),
+          IOSUiSettings(
+            title: 'Crop Image To Fit QR Code',
+          ),
+        ],
+      );
+      await AiDataRepository().updateReferenceImage(image);
+      referenceImageNotifier.value = image.path;
+    } catch (e) {
+      throw "error: e";
+    }
   }
 }
 
@@ -79,15 +117,16 @@ String _constructAiParameters() {
         "qr_code_vcard": null,
         "qr_code_file": null,
         "use_url_shortener": true,
-        "text_prompt": "test",
-        "negative_prompt": "",
-        "image_prompt": imagePrompt,
+        "text_prompt": textPromptController.text,
+        "negative_prompt": negativeTextPromptController.text,
+        "image_prompt": imagePrompt.isEmpty ? null : imagePrompt,
         "image_prompt_controlnet_models": [
           "sd_controlnet_canny",
           "sd_controlnet_depth",
           "sd_controlnet_tile"
         ],
-        "image_prompt_strength": referenceImageStrengthValue,
+        "image_prompt_strength":
+            imagePrompt.isEmpty ? null : referenceImageStrengthValue,
         "image_prompt_scale": 1,
         "image_prompt_pos_x": 0.5,
         "image_prompt_pos_y": 0.5,

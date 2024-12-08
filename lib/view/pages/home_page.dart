@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:animations/animations.dart';
 
-import 'package:qr_code_generator/model/qr_code_data.dart';
-
 import 'package:qr_code_generator/view/pages/ai_onboarding_page.dart';
 import 'package:qr_code_generator/view/pages/settings_page.dart';
 
@@ -15,6 +13,8 @@ import 'package:qr_code_generator/view/widgets/create_and_save_widget.dart';
 
 import 'package:qr_code_generator/view/components/message_input_card.dart';
 import 'package:qr_code_generator/viewModel/homepage_viewmodel.dart';
+
+import 'package:qr_code_generator/view/widgets/slider_widget.dart';
 
 const double fabDimension = 56.0;
 
@@ -32,16 +32,6 @@ class HomePageState extends State<HomePage> {
   // maybe?
   void initState() {
     super.initState();
-    loadPersistentVariables();
-  }
-
-  // load the settings the user sets in the settings page
-  Future<void> loadPersistentVariables() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      selectedQrCodeSize =
-          prefs.getString(qrCodePrefName) ?? qrCodeSizeOptions[0];
-    });
   }
 
   @override
@@ -146,7 +136,10 @@ class _QrcodeImageDisplayAndButtonsCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ImageDisplay(qrcodeImageUrlNotifier: qrcodeImageUrlNotifier),
+              ImageDisplay(
+                qrcodeImageUrlNotifier: qrcodeImageUrlNotifier,
+                loadingNotifier: qrcodeLoadingNotifier,
+              ),
               CreateAndSaveButtons(
                 qrcodeImageUrlNotifier: qrcodeImageUrlNotifier,
                 saveImageFunction: saveImageFunction,

@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
 
 class AiSlider extends StatelessWidget {
-  final double value;
   final ValueChanged<double> onChanged;
-  final double min;
   final double max;
+  final ValueNotifier<double> valueNotifier;
 
   const AiSlider({
-    required this.value,
     required this.onChanged,
-    required this.min,
     required this.max,
+    required this.valueNotifier,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        activeTickMarkColor: Colors.transparent,
-        inactiveTickMarkColor: Colors.transparent,
-      ),
-      child: Slider(
-        value: value,
-        min: min,
-        max: max,
-        label: max <= 1 ? value.toString() : value.round().toString(),
-        divisions: 20,
-        onChanged: (value) {
-          onChanged(value);
-        },
-      ),
+    return ValueListenableBuilder<double>(
+      valueListenable: valueNotifier,
+      builder: (context, value, _) {
+        return SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            activeTickMarkColor: Colors.transparent,
+            inactiveTickMarkColor: Colors.transparent,
+          ),
+          child: Slider(
+            value: value,
+            min: 0,
+            max: max,
+            label: max <= 1 ? value.toString() : value.round().toString(),
+            divisions: 20,
+            onChanged: (value) {
+              onChanged(value);
+            },
+          ),
+        );
+      },
     );
   }
 }

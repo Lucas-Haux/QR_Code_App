@@ -8,6 +8,7 @@ import 'package:qr_code_generator/viewModel/logic/construct_qrcode_parameters_lo
 import 'package:qr_code_generator/viewModel/logic/save_image_logic.dart';
 
 ValueNotifier<String> qrcodeImageUrlNotifier = ValueNotifier<String>('');
+ValueNotifier<bool> qrcodeLoadingNotifier = ValueNotifier<bool>(false);
 
 ValueNotifier<ErrorCorrectionLevel> errorCorrectionLevelNotifier =
     ValueNotifier<ErrorCorrectionLevel>(currentErrorCorrectionLevel);
@@ -48,7 +49,10 @@ class QrHomepageViewmodel extends ChangeNotifier {
       secondTextController,
       thirdTextController,
     );
+    qrcodeImageUrlNotifier.value = "";
+    qrcodeLoadingNotifier.value = true;
     QrcodeDataRepository().updateQrcode(qrcodeInfo);
+    qrcodeLoadingNotifier.value = false;
   }
 
   Future<void> saveImage() async {

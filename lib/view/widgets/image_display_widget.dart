@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 // shows image of qrcode once notified
 class ImageDisplay extends StatelessWidget {
   final ValueNotifier<String> qrcodeImageUrlNotifier;
-  const ImageDisplay({required this.qrcodeImageUrlNotifier, super.key});
+  final ValueNotifier<bool> loadingNotifier;
+  const ImageDisplay({
+    required this.qrcodeImageUrlNotifier,
+    required this.loadingNotifier,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,19 @@ class ImageDisplay extends StatelessWidget {
                   qrCodeImage, // Display the QR code
                 ),
               )
-            : const SizedBox.shrink();
+            : ValueListenableBuilder<bool>(
+                valueListenable: loadingNotifier,
+                builder: (context, loadState, child) {
+                  return loadState == true
+                      ? Container(
+                          constraints: const BoxConstraints(
+                              maxWidth: 300, maxHeight: 250),
+                          padding: const EdgeInsets.only(bottom: 30),
+                          child: const CircularProgressIndicator(),
+                        )
+                      : const SizedBox.shrink();
+                },
+              );
       },
     );
   }
